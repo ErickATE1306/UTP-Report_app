@@ -1,0 +1,1727 @@
+// Paleta de colores
+$primary-red: #FF395C;
+$black: #000000;
+$white: #FFFFFF;
+$gray-50: #F9FAFB;
+$gray-100: #F3F4F6;
+$gray-200: #E5E7EB;
+$gray-500: #6B7280;
+$gray-600: #4B5563;
+$gray-700: #374151;
+$gray-900: #111827;
+$green-500: #10B981;
+$green-100: #D1FAE5;
+$green-50: #ECFDF5;
+$yellow-500: #EAB308;
+$yellow-100: #FEF3C7;
+$yellow-50: #FFF7ED;
+$red-500: #EF4444;
+$red-100: #FEE2E2;
+$blue-500: #3B82F6;
+$blue-100: #DBEAFE;
+$blue-50: #EFF6FF;
+$blue-200: #BFDBFE;
+$orange-500: #F97316;
+$orange-100: #FED7AA;
+$orange-600: #EA580C;
+$orange-700: #C2410C;
+$amber-500: #F59E0B;
+$purple-500: #A855F7;
+
+// Animaciones
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+// Estructura general
+.security-panel {
+  background-color: $gray-50;
+  padding: 16px;
+  max-width: 1280px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Spacing entre secciones mobile */
+
+  @media (min-width: 768px) {
+    padding: 24px;
+    gap: 24px; /* Spacing entre secciones desktop */
+  }
+}
+
+// Header Superior
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px; /* Gap for responsive */
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shield-container {
+  width: 40px;
+  height: 40px;
+  background-color: $primary-red;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (min-width: 768px) {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.shield-icon {
+  font-size: 20px;
+  color: $white;
+
+  @media (min-width: 768px) {
+    font-size: 24px;
+  }
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: $gray-900;
+  margin: 0;
+
+  @media (min-width: 768px) {
+    font-size: 20px;
+  }
+}
+
+.header-subtitle {
+  font-size: 14px;
+  color: $gray-600;
+  margin: 4px 0 0 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  @media (max-width: 767px) {
+    justify-content: center;
+  }
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: $white; /* All status badges have white text */
+
+  &.available {
+    background-color: $green-500;
+  }
+
+  &.occupied {
+    background-color: $yellow-500;
+  }
+
+  &.out-of-service {
+    background-color: $red-500;
+  }
+}
+
+.report-btn {
+  background-color: $primary-red;
+  color: $white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.btn-icon {
+  font-size: 16px; /* AlertTriangle size 16px */
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+}
+
+.stat-card {
+  background-color: $white;
+  border: 1px solid $gray-200;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  @media (min-width: 768px) {
+    padding: 24px;
+    gap: 16px;
+  }
+
+  .stat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px; /* Icono tamaño 20px (mobile) */
+
+    @media (min-width: 768px) {
+      width: 40px;
+      height: 40px;
+      font-size: 24px; /* Icono tamaño 24px (desktop) */
+    }
+  }
+
+  .stat-content {
+    flex: 1;
+  }
+
+  .stat-number {
+    font-size: 24px;
+    font-weight: 700;
+    color: $gray-900;
+
+    @media (min-width: 768px) {
+      font-size: 28px;
+    }
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: $gray-600;
+    line-height: 1.2;
+
+    @media (min-width: 768px) {
+      font-size: 14px;
+    }
+  }
+
+  &.pending {
+    .stat-icon {
+      background-color: $blue-100;
+      color: #2563EB; /* Blue 600 */
+    }
+  }
+
+  &.investigating {
+    .stat-icon {
+      background-color: $orange-100;
+      color: $orange-600;
+    }
+  }
+
+  &.completed {
+    .stat-icon {
+      background-color: $green-100;
+      color: #059669; /* Green 600 */
+    }
+  }
+
+  &.high-priority {
+    .stat-icon {
+      background-color: $red-100;
+      color: #DC2626; /* Red 600 */
+    }
+  }
+}
+
+// Panel de Control de Estado
+.control-panel {
+  background-color: $blue-50;
+  border: 1px solid $blue-200;
+  border-radius: 8px;
+  padding: 16px;
+
+  @media (min-width: 768px) {
+    padding: 24px;
+  }
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.panel-icon {
+  font-size: 16px; /* User icon size */
+  color: inherit; /* Color heredado */
+
+  @media (min-width: 768px) {
+    font-size: 20px;
+  }
+}
+
+.panel-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: $gray-900;
+  margin: 0;
+
+  @media (min-width: 768px) {
+    font-size: 18px;
+  }
+}
+
+.control-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.control-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-label {
+  font-size: 12px;
+  color: $gray-600;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.control-select {
+  padding: 8px 12px;
+  border: 1px solid $gray-200;
+  border-radius: 6px;
+  background-color: $white;
+  font-size: 14px;
+  color: $gray-900;
+  cursor: pointer;
+  appearance: none; /* Remove default browser styling */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%20viewBox%3D%220%200%20292.4%20292.4%22%3E%3Cpath%20fill%3D%22%234B5563%22%20d%3D%22M287%20197.9L159.3%2069.2c-4.7-4.7-12.3-4.7-17%200L5.4%20197.9c-4.7%204.7-4.7%2012.3%200%2017l13.7%2013.7c4.7%204.7%2012.3%204.7%2017%200l118.8-118.7L256.3%20228.6c4.7%204.7%2012.3%204.7%2017%200l13.7-13.7c4.7-4.7%204.7-12.3%200-17z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow */
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+  padding-right: 30px; /* Make space for the arrow */
+
+  &:focus {
+    outline: none;
+    border-color: $primary-red;
+  }
+}
+
+.active-reports {
+  background-color: $white;
+  border: 1px solid $gray-200;
+  border-radius: 6px;
+  padding: 12px;
+  text-align: center;
+}
+
+.reports-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: $red-500; /* Changed to Red 500 as per image */
+}
+
+.reports-label {
+  font-size: 12px;
+  color: $gray-600;
+}
+
+.patrol-alert {
+  background-color: $yellow-100;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.alert-icon {
+  font-size: 16px; /* MapPin icon size */
+  color: #92400E; /* Yellow 900 */
+}
+
+.alert-text {
+  font-size: 14px;
+  color: #92400E;
+}
+
+// Reportes Asignados a Seguridad
+.reports-section {
+  background-color: $white;
+  border: 1px solid $gray-200;
+  border-radius: 8px;
+  padding: 16px;
+
+  @media (min-width: 768px) {
+    padding: 24px;
+  }
+}
+
+.reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  text-align: center;
+  color: $gray-500;
+
+  .empty-state-icon {
+    font-size: 48px;
+    color: $gray-500;
+    margin-bottom: 16px;
+
+    @media (min-width: 768px) {
+      font-size: 64px;
+    }
+  }
+
+  .empty-state-text {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .empty-state-subtext {
+    font-size: 14px;
+    color: $gray-600;
+  }
+}
+
+.report-card {
+  border: 1px solid $gray-200;
+  border-radius: 8px;
+  padding: 12px;
+  background-color: $white;
+  transition: background-color 0.2s;
+
+  @media (min-width: 768px) {
+    padding: 16px;
+  }
+
+  &:hover {
+    background-color: $gray-50;
+  }
+}
+
+.report-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.priority-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: $white;
+
+  &.high {
+    background-color: $red-500;
+  }
+
+  &.medium {
+    background-color: $yellow-500;
+  }
+
+  &.low {
+    background-color: $green-500;
+  }
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: $white;
+  border: none; /* Ensure no border */
+
+  &.assigned {
+    background-color: $blue-500;
+  }
+
+  &.going-to-zone {
+    background-color: $amber-500;
+  }
+
+  &.investigating {
+    background-color: $orange-500;
+  }
+
+  &.in-progress {
+    background-color: $purple-500;
+  }
+
+  &.resolved {
+    background-color: $green-500;
+  }
+}
+
+.report-id {
+  color: $gray-500;
+  font-size: 12px;
+}
+
+.report-content {
+  margin-bottom: 16px;
+}
+
+.report-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: $gray-900;
+  margin: 0 0 12px 0;
+
+  @media (min-width: 768px) {
+    font-size: 18px;
+  }
+}
+
+.report-details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detail-icon {
+  font-size: 14px;
+  color: $gray-600;
+
+  @media (min-width: 768px) {
+    font-size: 16px;
+  }
+}
+
+.detail-text {
+  font-size: 14px;
+  color: $gray-600;
+}
+
+.report-description {
+  font-size: 14px;
+  color: $gray-700;
+  line-height: 1.5;
+  margin: 0 0 16px 0; /* Margin bottom 16px */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-clamp: 3; /* Standard property for compatibility */
+}
+
+.report-actions {
+  display: flex;
+  gap: 8px;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
+}
+
+.action-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+
+  &.go-to-zone {
+    background-color: $orange-600;
+    color: $white;
+
+    &:hover {
+      background-color: $orange-700;
+    }
+  }
+
+  &.arrived-at-zone {
+    background-color: #2563EB; /* Blue 600 */
+    color: $white;
+
+    &:hover {
+      background-color: #1D4ED8; /* Blue 700 */
+    }
+  }
+
+  &.mark-in-progress {
+    background-color: transparent;
+    color: $gray-700;
+    border: 1px solid $gray-200;
+
+    &:hover {
+      background-color: $gray-100;
+    }
+  }
+
+  &.complete-report {
+    background-color: #059669; /* Green 600 */
+    color: $white;
+
+    &:hover {
+      background-color: #047857;
+    }
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Dark mode overrides for Seguridad inicio */
+html.dark-mode, :host-context(.dark-mode) {
+  .security-panel { background-color: #000 !important; color: #f5f6f7 !important; }
+
+  .stat-card,
+  .control-panel,
+  .reports-section,
+  .reports-list .report-card,
+  .report-card,
+  .completed-reports,
+  .modal,
+  #complete-modal .modal,
+  .destination-info,
+  .report-summary {
+    background-color: #070707 !important;
+    border: 1px solid rgba(255,255,255,0.04) !important;
+    box-shadow: none !important;
+    color: #e6eef8 !important;
+  }
+
+  .header-title,
+  .header-subtitle,
+  .stat-number,
+  .stat-label,
+  .panel-title,
+  .reports-number,
+  .reports-label,
+  .report-title,
+  .report-description,
+  .detail-text,
+  .completed-title,
+  .completed-date { color: #e6eef8 !important; }
+
+  .panel-icon, .detail-icon, .modal-icon, .modal-close { color: #e6eef8 !important; }
+
+  .control-select, select.control-select, .police-description, textarea, .report-summary {
+    background: #0b0b0b !important;
+    color: #e6eef8 !important;
+    border: 1px solid rgba(255,255,255,0.04) !important;
+  }
+
+  .status-badge.available { background-color: #10B981 !important; }
+  .status-badge.occupied { background-color: #EAB308 !important; }
+  .status-badge.out-of-service { background-color: #EF4444 !important; }
+  .priority-badge.high { background-color: #EF4444 !important; }
+  .priority-badge.medium { background-color: #F59E0B !important; }
+  .priority-badge.low { background-color: #3B82F6 !important; }
+
+  .nav-arrow { background-color: rgba(249,115,22,0.06); color: #F97316 !important; }
+
+  .action-btn { background: rgba(255,255,255,0.02) !important; color: #e6eef8 !important; border: 1px solid rgba(255,255,255,0.03); }
+  .action-btn.go-to-zone { background: #f97316 !important; color: #fff !important; }
+  .action-btn.complete-report { background: #059669 !important; color: #fff !important; }
+
+  .modal-overlay { background: rgba(0,0,0,0.6) !important; }
+  .modal-close { color: #e6eef8 !important; }
+
+  .modal-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); }
+}
+
+/* Specific fix: ensure destination/info boxes inside modal are dark and readable */
+html.dark-mode .modal-card .destination-info,
+html.dark-mode .modal-card .modal-info,
+:host-context(.dark-mode) .modal-card .destination-info {
+  background: #0b0b0b !important;
+  color: #f5f6f7 !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+}
+html.dark-mode .modal-card .destination-info strong, html.dark-mode .modal-card .modal-info strong { color: #fff !important; }
+
+  /* Fix remaining white boxes (active reports / small panels) - dark mode ONLY */
+  html.dark-mode .active-reports,
+  html.dark-mode .active-reports *,
+  html.dark-mode .reports-number,
+  html.dark-mode .reports-label,
+  html.dark-mode .control-panel .active-reports,
+  :host-context(.dark-mode) .active-reports,
+  :host-context(.dark-mode) .active-reports *,
+  :host-context(.dark-mode) .reports-number,
+  :host-context(.dark-mode) .reports-label,
+  :host-context(.dark-mode) .control-panel .active-reports {
+    background: #070707 !important;
+    color: #dfe9f3 !important;
+    border: 1px solid rgba(255,255,255,0.04) !important;
+  }
+
+  /* Light mode reset to ensure it does not stay black after toggling */
+  html:not(.dark-mode) .active-reports,
+  html:not(.dark-mode) .active-reports *,
+  html:not(.dark-mode) .reports-number,
+  html:not(.dark-mode) .reports-label,
+  html:not(.dark-mode) .control-panel .active-reports {
+    background: #ffffff !important;
+    color: inherit !important;
+    border: 1px solid $gray-200 !important;
+  }
+
+  /* If there are small inline white boxes use this catch-all */
+  .security-panel .panel-header, .security-panel .stats-section, .security-panel .active-reports {
+    background: transparent !important;
+  }
+
+/* Additional Responsive Adjustments */
+
+@media (max-width: 991px) {
+  .security-panel {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .header-left {
+    gap: 10px;
+  }
+
+  .shield-container {
+    width: 36px;
+    height: 36px;
+  }
+
+  .shield-icon {
+    font-size: 18px;
+  }
+
+  .header-title {
+    font-size: 16px;
+  }
+
+  .header-subtitle {
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  .header-right {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .status-badge {
+    width: 100%;
+    text-align: center;
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .report-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 7px 14px;
+    font-size: 13px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .stat-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+  }
+
+  .stat-number {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .control-panel {
+    padding: 18px;
+  }
+
+  .panel-header {
+    margin-bottom: 12px;
+  }
+
+  .panel-icon {
+    font-size: 14px;
+  }
+
+  .panel-title {
+    font-size: 15px;
+  }
+
+  .control-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .control-label {
+    font-size: 11px;
+  }
+
+  .control-select {
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+
+  .active-reports {
+    padding: 10px;
+  }
+
+  .reports-number {
+    font-size: 20px;
+  }
+
+  .reports-label {
+    font-size: 11px;
+  }
+
+  .patrol-alert {
+    padding: 10px;
+    margin-top: 12px;
+  }
+
+  .alert-icon {
+    font-size: 14px;
+  }
+
+  .alert-text {
+    font-size: 13px;
+  }
+
+  .reports-section {
+    padding: 18px;
+  }
+
+  .reports-list {
+    gap: 12px;
+  }
+
+  .empty-state {
+    padding: 24px;
+  }
+
+  .empty-state-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+  }
+
+  .empty-state-text {
+    font-size: 16px;
+  }
+
+  .empty-state-subtext {
+    font-size: 12px;
+  }
+
+  .report-card {
+    padding: 10px;
+  }
+
+  .report-header {
+    margin-bottom: 10px;
+    gap: 6px;
+  }
+
+  .priority-badge, .status-badge {
+    padding: 3px 6px;
+    font-size: 10px;
+  }
+
+  .report-id {
+    font-size: 11px;
+  }
+
+  .report-content {
+    margin-bottom: 12px;
+  }
+
+  .report-title {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .report-details {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .detail-icon {
+    font-size: 12px;
+  }
+
+  .detail-text {
+    font-size: 12px;
+  }
+
+  .report-description {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .report-actions {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .action-btn {
+    padding: 7px 14px;
+    font-size: 11px;
+  }
+
+  .completed-reports {
+    padding: 18px;
+  }
+
+  .completed-list {
+    gap: 10px;
+  }
+
+  .completed-item {
+    padding: 10px;
+  }
+
+  .completed-info {
+    gap: 6px;
+  }
+
+  .completed-title {
+    font-size: 13px;
+  }
+
+  .completed-badge {
+    padding: 1px 5px;
+    font-size: 10px;
+  }
+
+  .completed-date {
+    font-size: 11px;
+  }
+
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .modal {
+    border-radius: 10px;
+    max-width: 400px;
+  }
+
+  #complete-modal .modal {
+    max-width: 500px;
+  }
+
+  .modal-header {
+    padding: 15px 15px 0 15px;
+  }
+
+  .modal-title {
+    font-size: 16px;
+    gap: 6px;
+  }
+
+  .modal-icon {
+    font-size: 16px;
+  }
+
+  .modal-close {
+    font-size: 20px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .modal-body {
+    padding: 15px;
+  }
+
+  .navigation-icon {
+    margin-bottom: 15px;
+  }
+
+  .nav-arrow {
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+  }
+
+  .modal-text {
+    margin-bottom: 15px;
+    font-size: 13px;
+  }
+
+  .destination-info {
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+
+  .info-item {
+    font-size: 13px;
+  }
+
+  .officer-info {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .report-summary {
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+
+  .summary-item {
+    font-size: 13px;
+  }
+
+  .textarea-label {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .police-description {
+    min-height: 90px;
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .help-text {
+    font-size: 11px;
+    margin-top: 3px;
+  }
+
+  .modal-actions {
+    gap: 10px;
+    padding: 0 15px 15px 15px;
+  }
+
+  .btn {
+    padding: 9px 18px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 767px) {
+  .security-panel {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .header {
+    gap: 8px;
+  }
+
+  .header-left {
+    gap: 8px;
+  }
+
+  .shield-container {
+    width: 32px;
+    height: 32px;
+  }
+
+  .shield-icon {
+    font-size: 16px;
+  }
+
+  .header-title {
+    font-size: 14px;
+  }
+
+  .header-subtitle {
+    font-size: 11px;
+  }
+
+  .header-right {
+    gap: 6px;
+  }
+
+  .status-badge {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .report-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .stats-grid {
+    gap: 8px;
+  }
+
+  .stat-card {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .stat-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+  }
+
+  .stat-number {
+    font-size: 18px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+  }
+
+  .control-panel {
+    padding: 14px;
+  }
+
+  .panel-header {
+    margin-bottom: 10px;
+  }
+
+  .panel-icon {
+    font-size: 12px;
+  }
+
+  .panel-title {
+    font-size: 13px;
+  }
+
+  .control-grid {
+    gap: 8px;
+  }
+
+  .control-label {
+    font-size: 10px;
+  }
+
+  .control-select {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .active-reports {
+    padding: 8px;
+  }
+
+  .reports-number {
+    font-size: 18px;
+  }
+
+  .reports-label {
+    font-size: 10px;
+  }
+
+  .patrol-alert {
+    padding: 8px;
+    margin-top: 10px;
+  }
+
+  .alert-icon {
+    font-size: 12px;
+  }
+
+  .alert-text {
+    font-size: 12px;
+  }
+
+  .reports-section {
+    padding: 14px;
+  }
+
+  .reports-list {
+    gap: 8px;
+  }
+
+  .empty-state {
+    padding: 20px;
+  }
+
+  .empty-state-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  .empty-state-text {
+    font-size: 14px;
+  }
+
+  .empty-state-subtext {
+    font-size: 11px;
+  }
+
+  .report-card {
+    padding: 8px;
+  }
+
+  .report-header {
+    margin-bottom: 8px;
+    gap: 4px;
+  }
+
+  .priority-badge, .status-badge {
+    padding: 2px 5px;
+    font-size: 9px;
+  }
+
+  .report-id {
+    font-size: 10px;
+  }
+
+  .report-content {
+    margin-bottom: 10px;
+  }
+
+  .report-title {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .report-details {
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  .detail-icon {
+    font-size: 11px;
+  }
+
+  .detail-text {
+    font-size: 11px;
+  }
+
+  .report-description {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .report-actions {
+    gap: 4px;
+  }
+
+  .action-btn {
+    padding: 6px 12px;
+    font-size: 10px;
+  }
+
+  .completed-reports {
+    padding: 14px;
+  }
+
+  .completed-list {
+    gap: 8px;
+  }
+
+  .completed-item {
+    padding: 8px;
+  }
+
+  .completed-info {
+    gap: 4px;
+  }
+
+  .completed-title {
+    font-size: 12px;
+  }
+
+  .completed-badge {
+    padding: 1px 4px;
+    font-size: 9px;
+  }
+
+  .completed-date {
+    font-size: 10px;
+  }
+
+  .modal-overlay {
+    padding: 8px;
+  }
+
+  .modal {
+    border-radius: 8px;
+    max-width: 350px;
+  }
+
+  #complete-modal .modal {
+    max-width: 450px;
+  }
+
+  .modal-header {
+    padding: 12px 12px 0 12px;
+  }
+
+  .modal-title {
+    font-size: 14px;
+    gap: 4px;
+  }
+
+  .modal-icon {
+    font-size: 14px;
+  }
+
+  .modal-close {
+    font-size: 18px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .modal-body {
+    padding: 12px;
+  }
+
+  .navigation-icon {
+    margin-bottom: 12px;
+  }
+
+  .nav-arrow {
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+  }
+
+  .modal-text {
+    margin-bottom: 12px;
+    font-size: 12px;
+  }
+
+  .destination-info {
+    padding: 8px;
+    margin-bottom: 12px;
+  }
+
+  .info-item {
+    font-size: 12px;
+  }
+
+  .officer-info {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .report-summary {
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+
+  .summary-item {
+    font-size: 12px;
+  }
+
+  .textarea-label {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .police-description {
+    min-height: 80px;
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .help-text {
+    font-size: 10px;
+  }
+
+  .modal-actions {
+    gap: 8px;
+    padding: 0 12px 12px 12px;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
+// Reportes Completados
+.completed-reports {
+  background-color: $white;
+  border: 1px solid $gray-200;
+  border-radius: 8px;
+  padding: 16px;
+
+  @media (min-width: 768px) {
+    padding: 24px;
+  }
+}
+
+.completed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.completed-item {
+  background-color: $green-50;
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+.completed-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.completed-title {
+  font-size: 14px;
+  color: $gray-900;
+  font-weight: 500;
+}
+
+.completed-badge {
+  background-color: $green-100;
+  color: #065F46;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.completed-date {
+  font-size: 12px;
+  color: $gray-600;
+}
+
+// Modales
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none; /* Hidden by default */
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal {
+  background-color: $white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px; /* Max width for going-modal */
+  max-height: 90vh;
+  overflow: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Specific styles for complete-modal */
+#complete-modal .modal {
+  max-width: 600px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px 0 20px;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: $gray-900;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-icon {
+  font-size: 18px;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: $gray-500;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.navigation-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.nav-arrow {
+  width: 64px;
+  height: 64px;
+  background-color: $orange-100;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: $orange-600;
+  animation: pulse 2s infinite;
+
+  @media (min-width: 768px) {
+    width: 80px;
+    height: 80px;
+    font-size: 40px;
+  }
+}
+
+.modal-text {
+  text-align: center;
+  color: $gray-700;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.destination-info {
+  background-color: #FFF7ED; /* Replaced $orange-50 with literal value to resolve compilation error */
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.info-item {
+  font-size: 14px;
+  color: $gray-700;
+  margin-bottom: 4px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.officer-info {
+  font-size: 14px;
+  color: $gray-600;
+  margin-bottom: 16px;
+}
+
+.report-summary {
+  background-color: $gray-50;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.summary-item {
+  font-size: 14px;
+  color: $gray-700;
+  margin-bottom: 4px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.textarea-label {
+  display: block;
+  font-size: 14px;
+  color: $gray-700;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.police-description {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  font-size: 14px;
+  color: $gray-900;
+  resize: vertical;
+  font-family: inherit;
+
+  @media (min-width: 768px) {
+    min-height: 120px;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-red;
+    box-shadow: 0 0 0 3px rgba($primary-red, 0.1);
+  }
+
+  &::placeholder {
+    color: $gray-500;
+  }
+}
+
+.help-text {
+  font-size: 12px;
+  color: $gray-500;
+  margin-top: 4px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  padding: 0 20px 20px 20px;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  border: none;
+
+  &.secondary {
+    background-color: transparent;
+    color: $gray-700;
+    border: 1px solid $gray-200;
+
+    &:hover {
+      background-color: $gray-100;
+    }
+  }
+
+  &.primary {
+    background-color: #2563EB; /* Blue 600 */
+    color: $white;
+
+    &:hover {
+      background-color: #1D4ED8; /* Blue 700 */
+    }
+  }
+
+  &.success {
+    background-color: #059669; /* Green 600 */
+    color: $white;
+
+    &:hover {
+      background-color: #047857;
+    }
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+    justify-content: center;
+  }
+}

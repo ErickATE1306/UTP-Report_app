@@ -1,0 +1,35 @@
+<section class="incident-types">
+  <div class="form-card">
+    <h2><span class="plus">+</span> Agregar Tipo de Incidente</h2>
+    <div class="form-row">
+      <input type="text" placeholder="Nombre del tipo de incidente" [(ngModel)]="nombre" />
+      <input type="text" placeholder="Descripción" [(ngModel)]="descripcion" />
+    </div>
+    <div class="form-row">
+      <button class="btn-primary" (click)="save()">{{ editingId ? 'Guardar cambios' : '+ Agregar Tipo de Incidente' }}</button>
+      <button class="btn-secondary" *ngIf="editingId" (click)="cancelEdit()">Cancelar</button>
+    </div>
+  </div>
+
+  <div class="existing-types">
+    <h3>Tipos de Incidentes Existentes</h3>
+
+    <div class="incident-list">
+      <div class="incident-list">
+        <div *ngFor="let t of tipos" class="incident-card">
+          <div class="card-header">
+            <div>
+              <h4>{{ t.nombre }}</h4>
+              <p>{{ t.descripcion || '' }}</p>
+            </div>
+            <span class="status active">Activo</span>
+          </div>
+          <div class="card-actions">
+            <a href="#" class="edit" (click)="startEdit(t); $event.preventDefault()">✏️ Editar</a>
+            <a href="#" class="delete" (click)="remove(t.id); $event.preventDefault()">🗑️ Eliminar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,150 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top utp-navbar" [class.superadmin]="isSuperAdmin()" role="navigation" *ngIf="showNavbar()">
+  <div class="container-xl px-3">
+    <!-- Brand -->
+  <a class="navbar-brand d-flex align-items-center" [routerLink]="getHomePath()">
+      <svg class="shield me-2" viewBox="0 0 24 24" aria-hidden="true"><path stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" d="M12 3 4 7v7c0 5 8 9 8 9s8-4 8-9V7l-8-4Z"/></svg>
+      <span class="brand-text">UTP+Report</span>
+    </a>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" aria-controls="navbarOffcanvas" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="navbarOffcanvas" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title d-flex align-items-center" id="offcanvasNavbarLabel">
+          <svg class="shield me-2" viewBox="0 0 24 24" aria-hidden="true"><path stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" d="M12 3 4 7v7c0 5 8 9 8 9s8-4 8-9V7l-8-4Z"/></svg>
+          <span class="brand-text">UTP+Report</span>
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <!-- Left/Common links -->
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 left-nav">
+        <!-- Inicio siempre -->
+        <li class="nav-item" *ngIf="canShow('home')">
+          <a class="nav-link" [routerLink]="getHomePath()" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
+            <span>Inicio</span>
+          </a>
+        </li>
+        
+        <!-- Secciones por rol -->
+        <!-- Ocultar para SuperAdmin: gestión, reportes sensibles, estado de zonas -->
+        <ng-container *ngIf="!isSuperAdmin()">
+          <li class="nav-item" *ngIf="canShow('usuarios')"><a class="nav-link" [routerLink]="['/superadmin','usuarios']" routerLinkActive="active">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M21 21v-2a4 4 0 0 0 -3 -3.85" /></svg>
+            <span>Gestión de Usuarios</span></a></li>
+          <li class="nav-item" *ngIf="canShow('sensibles')"><a class="nav-link" [routerLink]="['/superadmin','reportes-sensibles']" routerLinkActive="active">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" /></svg>
+            <span>Reportes Sensibles</span></a></li>
+          
+        </ng-container>
+
+        <!-- ADMIN (rol admin no actuando como usuario): Inicio, Estado de Zonas, Reportes -->
+        <ng-container *ngIf="isAdmin()">
+          <!-- Inicio ya está arriba común -->
+          <li class="nav-item" *ngIf="canShow('zonas')"><a class="nav-link" [routerLink]="getZonasPath()" routerLinkActive="active">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" /></svg>
+            <span>Estado de Zonas</span></a></li>
+        </ng-container>
+
+        <!-- USUARIO puro o Admin actuando como usuario -->
+        <ng-container *ngIf="isUsuario() || isAdminAsUser()">
+          <li class="nav-item" *ngIf="canShow('zonas')"><a class="nav-link" [routerLink]="getZonasPath()" routerLinkActive="active">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" /></svg>
+            <span>Estado de Zonas</span></a></li>
+          <li class="nav-item" *ngIf="canShow('guia')">
+  <a class="nav-link" [routerLink]="['/usuario','guia-page']" routerLinkActive="active">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         class="icon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+      <path d="M12 16v.01" />
+      <path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483" />
+    </svg>
+    <span>Guía</span>
+  </a>
+</li>
+
+        </ng-container>
+
+        <!-- SEGURIDAD -->
+        <ng-container *ngIf="isSeguridad()">
+          <li class="nav-item" *ngIf="canShow('zonas')"><a class="nav-link" [routerLink]="['/seguridad','estado-zonas']" routerLinkActive="active">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" /></svg>
+            <span>Estado de Zonas</span></a></li>
+        </ng-container>
+
+        <!-- Notificaciones: al final del bloque de páginas -->
+        <li class="nav-item notifications-area" style="position: relative;">
+          <a class="nav-link icon-only" (click)="openNotifications()" title="Notificaciones" aria-label="Notificaciones">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
+            <span class="badge bg-danger rounded-pill ms-1" *ngIf="unreadCount() > 0">{{ unreadCount() }}</span>
+          </a>
+          <!-- Panel flotante de notificaciones -->
+          <div class="notifications-dropdown" *ngIf="showNotifs()">
+            <app-notificaciones [items]="notifications()"></app-notificaciones>
+          </div>
+        </li>
+
+        <!-- Nombre usuario con prefijo: junto a campanita -->
+        <li class="nav-item">
+          <span class="navbar-text user-name" [ngClass]="roleClass()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+            {{ rolePrefix() }}{{ userName() }}
+          </span>
+        </li>
+        <!-- Estado de sesión -->
+        <li class="nav-item">
+          <span class="navbar-text user-status" [class.active]="isAuthenticated()" [class.inactive]="!isAuthenticated()" aria-live="polite">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="label">{{ isAuthenticated() ? 'Activo' : 'Inactivo' }}</span>
+          </span>
+        </li>
+        <!-- Logout junto al usuario -->
+        <li class="nav-item">
+          <a class="nav-link icon-only logout-link" (click)="logout()" title="Cerrar sesión" aria-label="Cerrar sesión">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg>
+          </a>
+        </li>
+      </ul>
+        <!-- Right side -->
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <!-- CTA Reportar Ahora -->
+          <!-- Reportar Ahora: solo Usuario o Admin actuando como usuario -->
+          <li class="nav-item me-2" *ngIf="isUsuario() || isAdminAsUser()">
+            <button class="btn btn-danger report-cta" (click)="reportar()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg>
+              <span>Reportar Ahora</span>
+            </button>
+          </li>
+            <!-- Botón para abrir Tour del sistema (oculto para Admin, Seguridad y SuperAdmin) -->
+            <li class="nav-item me-2" *ngIf="!isAdmin() && !isSeguridad() && !isSuperAdmin()">
+              <button class="btn btn-outline-secondary" (click)="openTour()" title="Tour del sistema">Tour</button>
+            </li>
+            <!-- Global Dark Mode toggle (oculto para SuperAdmin) -->
+            <li class="nav-item me-2" *ngIf="!isSuperAdmin()">
+              <button class="btn btn-outline-secondary" (click)="darkModeService.toggleDarkMode()" title="Alternar Modo Oscuro" aria-label="Alternar modo oscuro">
+                <svg *ngIf="!darkModeService.darkMode()" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg *ngIf="darkModeService.darkMode()" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+              </button>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<app-tour *ngIf="tour.currentStepIndex !== -1"
+          [step]="tour.steps[tour.currentStepIndex]"
+          [isFirstStep]="tour.currentStepIndex === 0"
+          [isLastStep]="tour.currentStepIndex === tour.steps.length - 1"
+          [currentStepIndex]="tour.currentStepIndex"
+          [totalSteps]="tour.steps.length"
+          (nextStep)="tour.next()"
+          (prevStep)="tour.prev()"
+          (closeTour)="tour.completeTour()">
+</app-tour>
