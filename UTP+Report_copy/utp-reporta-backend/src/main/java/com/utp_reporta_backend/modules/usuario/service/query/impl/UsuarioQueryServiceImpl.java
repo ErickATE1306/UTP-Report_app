@@ -1,0 +1,321 @@
+package com.utp_reporta_backend.modules.usuario.service.query.impl;
+
+import com.utp_reporta_backend.modules.usuario.dto.response.UsuarioDTO;
+import com.utp_reporta_backend.modules.usuario.model.enums.ERol;
+import com.utp_reporta_backend.modules.usuario.model.enums.TipoUsuario;
+import com.utp_reporta_backend.modules.usuario.model.Usuario;
+import com.utp_reporta_backend.modules.usuario.repository.UsuarioRepository;
+
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.utp_reporta_backend.modules.usuario.service.query.UsuarioQueryService;
+import com.utp_reporta_backend.modules.usuario.mapper.UsuarioMapper;
+import org.springframework.transaction.annotation.Transactional;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class UsuarioQueryServiceImpl implements UsuarioQueryService {
+    private final UsuarioRepository usuarioRepository;
+    private final UsuarioMapper usuarioMapper;
+
+    @Override
+    public List<UsuarioDTO> getAllUsuarios() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        return usuarios.stream().map(usuario -> {
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            usuarioDTO.setId(usuario.getId());
+            usuarioDTO.setNombreCompleto(usuario.getNombreCompleto());
+            usuarioDTO.setUsername(usuario.getUsername());
+            usuarioDTO.setCorreo(usuario.getCorreo());
+            usuarioDTO.setTelefono(usuario.getTelefono());
+            usuarioDTO.setTipoUsuario(usuario.getTipoUsuario());
+            usuarioDTO.setSedeNombre(usuario.getSede() != null ? usuario.getSede().getNombre() : null);
+            usuarioDTO.setZonasNombres(usuario.getZonas().stream()
+                    .map(zona -> zona.getNombre())
+                    .collect(Collectors.toList()));
+            usuarioDTO.setIntentos(usuario.getIntentosReporte());
+            usuarioDTO.setFechaUltimoReporte(usuario.getFechaUltimoReporte());
+            usuarioDTO.setEnabled(usuario.isEnabled());
+            usuarioDTO.setRoles(usuario.getRoles().stream()
+                    .map(rol -> rol.getNombre().name())
+                    .collect(Collectors.toList()));
+            return usuarioDTO;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UsuarioDTO> getUsuariosByRolUsuario() {
+        List<Usuario> allUsuarios = usuarioRepository.findAll();
+        return allUsuarios.stream()
+                .filter(usuario -> usuario.getRoles().stream()
+                        .anyMatch(rol -> rol.getNombre().equals(ERol.ROLE_USUARIO)))
+                .map(usuario -> {
+                    UsuarioDTO usuarioDTO = new UsuarioDTO();
+                    usuarioDTO.setId(usuario.getId());
+                    usuarioDTO.setNombreCompleto(usuario.getNombreCompleto());
+                    usuarioDTO.setUsername(usuario.getUsername());
+                    usuarioDTO.setCorreo(usuario.getCorreo());
+                    usuarioDTO.setTelefono(usuario.getTelefono());
+                    usuarioDTO.setTipoUsuario(usuario.getTipoUsuario());
+                    usuarioDTO.setSedeNombre(usuario.getSede() != null ? usuario.getSede().getNombre() : null);
+                    usuarioDTO.setZonasNombres(usuario.getZonas().stream()
+                            .map(zona -> zona.getNombre())
+                            .collect(Collectors.toList()));
+                    usuarioDTO.setIntentos(usuario.getIntentosReporte());
+                    usuarioDTO.setFechaUltimoReporte(usuario.getFechaUltimoReporte());
+                    usuarioDTO.setEnabled(usuario.isEnabled());
+                    usuarioDTO.setRoles(usuario.getRoles().stream()
+                            .map(rol -> rol.getNombre().name())
+                            .collect(Collectors.toList()));
+                    return usuarioDTO;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UsuarioDTO> getUsuariosByRolAdmin() {
+        List<Usuario> allUsuarios = usuarioRepository.findAll();
+        return allUsuarios.stream()
+                .filter(usuario -> usuario.getRoles().stream()
+                        .anyMatch(rol -> rol.getNombre().equals(ERol.ROLE_ADMIN)))
+                .map(usuario -> {
+                    UsuarioDTO usuarioDTO = new UsuarioDTO();
+                    usuarioDTO.setId(usuario.getId());
+                    usuarioDTO.setNombreCompleto(usuario.getNombreCompleto());
+                    usuarioDTO.setUsername(usuario.getUsername());
+                    usuarioDTO.setCorreo(usuario.getCorreo());
+                    usuarioDTO.setTelefono(usuario.getTelefono());
+                    usuarioDTO.setTipoUsuario(usuario.getTipoUsuario());
+                    usuarioDTO.setSedeNombre(usuario.getSede() != null ? usuario.getSede().getNombre() : null);
+                    usuarioDTO.setZonasNombres(usuario.getZonas().stream()
+                            .map(zona -> zona.getNombre())
+                            .collect(Collectors.toList()));
+                    usuarioDTO.setIntentos(usuario.getIntentosReporte());
+                    usuarioDTO.setFechaUltimoReporte(usuario.getFechaUltimoReporte());
+                    usuarioDTO.setEnabled(usuario.isEnabled());
+                    usuarioDTO.setRoles(usuario.getRoles().stream()
+                            .map(rol -> rol.getNombre().name())
+                            .collect(Collectors.toList()));
+                    return usuarioDTO;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UsuarioDTO> getUsuariosByRolSeguridad() {
+        List<Usuario> allUsuarios = usuarioRepository.findAll();
+        return allUsuarios.stream()
+                .filter(usuario -> usuario.getRoles().stream()
+                        .anyMatch(rol -> rol.getNombre().equals(ERol.ROLE_SEGURIDAD)))
+                .map(usuario -> {
+                    UsuarioDTO usuarioDTO = new UsuarioDTO();
+                    usuarioDTO.setId(usuario.getId());
+                    usuarioDTO.setNombreCompleto(usuario.getNombreCompleto());
+                    usuarioDTO.setUsername(usuario.getUsername());
+                    usuarioDTO.setCorreo(usuario.getCorreo());
+                    usuarioDTO.setTelefono(usuario.getTelefono());
+                    usuarioDTO.setTipoUsuario(usuario.getTipoUsuario());
+                    usuarioDTO.setSedeNombre(usuario.getSede() != null ? usuario.getSede().getNombre() : null);
+                    usuarioDTO.setZonasNombres(usuario.getZonas().stream()
+                            .map(zona -> zona.getNombre())
+                            .collect(Collectors.toList()));
+                    usuarioDTO.setIntentos(usuario.getIntentosReporte());
+                    usuarioDTO.setFechaUltimoReporte(usuario.getFechaUltimoReporte());
+                    usuarioDTO.setEnabled(usuario.isEnabled());
+                    usuarioDTO.setRoles(usuario.getRoles().stream()
+                            .map(rol -> rol.getNombre().name())
+                            .collect(Collectors.toList()));
+                    return usuarioDTO;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UsuarioDTO> getUsuariosByTipoDocente() {
+        List<Usuario> allUsuarios = usuarioRepository.findAll();
+        return allUsuarios.stream()
+                .filter(usuario -> usuario.getTipoUsuario() != null && usuario.getTipoUsuario().equals(TipoUsuario.DOCENTE))
+                .map(usuario -> {
+                    UsuarioDTO usuarioDTO = new UsuarioDTO();
+                    usuarioDTO.setId(usuario.getId());
+                    usuarioDTO.setNombreCompleto(usuario.getNombreCompleto());
+                    usuarioDTO.setUsername(usuario.getUsername());
+                    usuarioDTO.setCorreo(usuario.getCorreo());
+                    usuarioDTO.setTelefono(usuario.getTelefono());
+                    usuarioDTO.setTipoUsuario(usuario.getTipoUsuario());
+                    usuarioDTO.setSedeNombre(usuario.getSede() != null ? usuario.getSede().getNombre() : null);
+                    usuarioDTO.setZonasNombres(usuario.getZonas().stream()
+                            .map(zona -> zona.getNombre())
+                            .collect(Collectors.toList()));
+                    usuarioDTO.setIntentos(usuario.getIntentosReporte());
+                    usuarioDTO.setFechaUltimoReporte(usuario.getFechaUltimoReporte());
+                    usuarioDTO.setEnabled(usuario.isEnabled());
+                    usuarioDTO.setRoles(usuario.getRoles().stream()
+                            .map(rol -> rol.getNombre().name())
+                            .collect(Collectors.toList()));
+                    return usuarioDTO;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UsuarioDTO> getUsuariosByTipoAlumno() {
+        List<Usuario> allUsuarios = usuarioRepository.findAll();
+        return allUsuarios.stream()
+                .filter(usuario -> usuario.getTipoUsuario() != null && usuario.getTipoUsuario().equals(TipoUsuario.ALUMNO))
+                .map(usuario -> {
+                    UsuarioDTO usuarioDTO = new UsuarioDTO();
+                    usuarioDTO.setId(usuario.getId());
+                    usuarioDTO.setNombreCompleto(usuario.getNombreCompleto());
+                    usuarioDTO.setUsername(usuario.getUsername());
+                    usuarioDTO.setCorreo(usuario.getCorreo());
+                    usuarioDTO.setTelefono(usuario.getTelefono());
+                    usuarioDTO.setTipoUsuario(usuario.getTipoUsuario());
+                    usuarioDTO.setSedeNombre(usuario.getSede() != null ? usuario.getSede().getNombre() : null);
+                    usuarioDTO.setZonasNombres(usuario.getZonas().stream()
+                            .map(zona -> zona.getNombre())
+                            .collect(Collectors.toList()));
+                    usuarioDTO.setIntentos(usuario.getIntentosReporte());
+                    usuarioDTO.setEnabled(usuario.isEnabled());
+                    usuarioDTO.setRoles(usuario.getRoles().stream()
+                            .map(rol -> rol.getNombre().name())
+                            .collect(Collectors.toList()));
+                    return usuarioDTO;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UsuarioDTO> getFilteredSeguridadUsers(Long zonaId, Long sedeId) {
+        List<Usuario> usuarios;
+        if (zonaId != null && sedeId != null) {
+            usuarios = usuarioRepository.findByRoles_NombreAndZonas_IdAndSede_Id(ERol.ROLE_SEGURIDAD, zonaId, sedeId);
+        } else if (zonaId != null) {
+            usuarios = usuarioRepository.findByRoles_NombreAndZonas_Id(ERol.ROLE_SEGURIDAD, zonaId);
+        } else if (sedeId != null) {
+            usuarios = usuarioRepository.findByRoles_NombreAndSede_Id(ERol.ROLE_SEGURIDAD, sedeId);
+        } else {
+            usuarios = usuarioRepository.findByRoles_Nombre(ERol.ROLE_SEGURIDAD);
+        }
+
+        return usuarios.stream().map(usuario -> {
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            usuarioDTO.setId(usuario.getId());
+            usuarioDTO.setNombreCompleto(usuario.getNombreCompleto());
+            usuarioDTO.setUsername(usuario.getUsername());
+            usuarioDTO.setCorreo(usuario.getCorreo());
+            usuarioDTO.setTelefono(usuario.getTelefono());
+            usuarioDTO.setTipoUsuario(usuario.getTipoUsuario());
+            usuarioDTO.setSedeNombre(usuario.getSede() != null ? usuario.getSede().getNombre() : null);
+            usuarioDTO.setZonasNombres(usuario.getZonas().stream()
+                    .map(zona -> zona.getNombre())
+                    .collect(Collectors.toList()));
+            usuarioDTO.setIntentos(usuario.getIntentosReporte());
+            usuarioDTO.setFechaUltimoReporte(usuario.getFechaUltimoReporte());
+            usuarioDTO.setEnabled(usuario.isEnabled());
+            usuarioDTO.setRoles(usuario.getRoles().stream()
+                    .map(rol -> rol.getNombre().name())
+                    .collect(Collectors.toList()));
+            return usuarioDTO;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public UsuarioDTO findByCodigo(String codigo) {
+        return usuarioRepository.findByUsername(codigo)
+                .map(usuario -> {
+                    UsuarioDTO usuarioDTO = new UsuarioDTO();
+                    usuarioDTO.setId(usuario.getId());
+                    usuarioDTO.setNombreCompleto(usuario.getNombreCompleto());
+                    usuarioDTO.setUsername(usuario.getUsername());
+                    usuarioDTO.setCorreo(usuario.getCorreo());
+                    usuarioDTO.setTelefono(usuario.getTelefono());
+                    usuarioDTO.setTipoUsuario(usuario.getTipoUsuario());
+                    usuarioDTO.setSedeNombre(usuario.getSede() != null ? usuario.getSede().getNombre() : null);
+                    usuarioDTO.setZonasNombres(usuario.getZonas().stream()
+                            .map(zona -> zona.getNombre())
+                            .collect(Collectors.toList()));
+                    usuarioDTO.setIntentos(usuario.getIntentosReporte());
+                    usuarioDTO.setFechaUltimoReporte(usuario.getFechaUltimoReporte());
+                    usuarioDTO.setEnabled(usuario.isEnabled());
+                    usuarioDTO.setRoles(usuario.getRoles().stream()
+                            .map(rol -> rol.getNombre().name())
+                            .collect(Collectors.toList()));
+                    return usuarioDTO;
+                })
+                .orElse(null); // Return null if user not found
+    }
+
+    @Override
+    public List<UsuarioDTO> getUsuariosByEnabledStatus(boolean enabled) {
+        List<Usuario> usuarios = usuarioRepository.findByEnabled(enabled);
+        return usuarios.stream().map(usuario -> {
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            usuarioDTO.setId(usuario.getId());
+            usuarioDTO.setNombreCompleto(usuario.getNombreCompleto());
+            usuarioDTO.setUsername(usuario.getUsername());
+            usuarioDTO.setCorreo(usuario.getCorreo());
+            usuarioDTO.setTelefono(usuario.getTelefono());
+            usuarioDTO.setTipoUsuario(usuario.getTipoUsuario());
+            usuarioDTO.setSedeNombre(usuario.getSede() != null ? usuario.getSede().getNombre() : null);
+            usuarioDTO.setZonasNombres(usuario.getZonas().stream()
+                    .map(zona -> zona.getNombre())
+                    .collect(Collectors.toList()));
+            usuarioDTO.setIntentos(usuario.getIntentosReporte());
+            usuarioDTO.setFechaUltimoReporte(usuario.getFechaUltimoReporte());
+            usuarioDTO.setEnabled(usuario.isEnabled());
+            usuarioDTO.setRoles(usuario.getRoles().stream()
+                    .map(rol -> rol.getNombre().name())
+                    .collect(Collectors.toList()));
+            return usuarioDTO;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UsuarioDTO> getAllUsersExcludingSuperAdmin() {
+        List<Usuario> usuarios = usuarioRepository.findByRoles_NombreNot(ERol.ROLE_SUPERADMIN);
+        return usuarios.stream().map(usuario -> {
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            usuarioDTO.setId(usuario.getId());
+            usuarioDTO.setNombreCompleto(usuario.getNombreCompleto());
+            usuarioDTO.setUsername(usuario.getUsername());
+            usuarioDTO.setCorreo(usuario.getCorreo());
+            usuarioDTO.setTelefono(usuario.getTelefono());
+            usuarioDTO.setTipoUsuario(usuario.getTipoUsuario());
+            usuarioDTO.setSedeNombre(usuario.getSede() != null ? usuario.getSede().getNombre() : null);
+            usuarioDTO.setZonasNombres(usuario.getZonas().stream()
+                    .map(zona -> zona.getNombre())
+                    .collect(Collectors.toList()));
+            usuarioDTO.setIntentos(usuario.getIntentosReporte());
+            usuarioDTO.setFechaUltimoReporte(usuario.getFechaUltimoReporte());
+            usuarioDTO.setEnabled(usuario.isEnabled());
+            usuarioDTO.setRoles(usuario.getRoles().stream()
+                    .map(rol -> rol.getNombre().name())
+                    .collect(Collectors.toList()));
+            return usuarioDTO;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public Boolean isTelefonoUnique(String telefono, Long id) {
+        if (id == null) {
+            // For creation, check if any user has this phone number
+            return !usuarioRepository.existsByTelefono(telefono);
+        } else {
+            // For update, check if any *other* user has this phone number
+            return !usuarioRepository.existsByTelefonoAndIdNot(telefono, id);
+        }
+    }
+
+    @Override
+    public UsuarioDTO getCurrentProfile(String principal) {
+        return usuarioRepository.findByUsernameOrCorreo(principal, principal)
+                .map(usuarioMapper::toResponse)
+                .orElse(null);
+    }
+}
