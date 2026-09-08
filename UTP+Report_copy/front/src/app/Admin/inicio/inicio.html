@@ -1,90 +1,41 @@
-<!-- Contenedor principal de la página, con altura mínima de la pantalla y fondo gris claro. -->
-<div class="min-h-screen bg-gray-50">
-  <!-- Contenido principal de la página, con ancho máximo y centrado automático, y relleno. -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+<section class="admin-page" aria-labelledby="admin-title">
+  <header class="page-header">
+    <div><p class="eyebrow">UTP Reporta</p><h1 id="admin-title">Panel de administración</h1><p>Gestiona reportes, asignaciones y zonas desde una sola vista.</p></div>
+    <button type="button" class="secondary-button" (click)="recargar()" [disabled]="cargando()">{{ cargando() ? 'Actualizando…' : 'Actualizar datos' }}</button>
+  </header>
+  <div class="notice success" *ngIf="exito()" role="status">{{ exito() }}</div>
+  <div class="notice error" *ngIf="error()" role="alert">{{ error() }}</div>
+  <nav class="tabs" aria-label="Secciones del administrador">
+    <button type="button" [class.active]="vista() === 'reportes'" (click)="seleccionarVista('reportes')">Reportes</button>
+    <button type="button" [class.active]="vista() === 'zonas'" (click)="seleccionarVista('zonas')">Zonas</button>
+  </nav>
 
-    <!-- SECCIÓN DEL ENCABEZADO DEL ADMINISTRADOR -->
-    <div class="mb-6 sm:mb-8">
-      <!-- Alerta informativa para el panel de administración. -->
-      <div class="alert border-primary bg-blue-50">
-        <!-- Icono de escudo (Shield icon) como marcador de posición. -->
-        <i class="shield-icon h-5 w-5 sm:h-6 sm:w-6"></i>
-        <!-- Descripción de la alerta. -->
-        <div class="alert-description text-sm sm:text-base lg:text-lg">
-          Panel de Administración - Gestiona alertas, reportes y supervisa la seguridad del campus en tiempo real.
+  <ng-container *ngIf="vista() === 'reportes'">
+    <section class="metrics" aria-label="Resumen de reportes">
+      <article><strong>{{ resumen().total }}</strong><span>Total</span></article><article><strong>{{ resumen().pendientes }}</strong><span>Pendientes</span></article><article><strong>{{ resumen().proceso }}</strong><span>En atención</span></article><article><strong>{{ resumen().aprobacion }}</strong><span>Por aprobar</span></article><article><strong>{{ resumen().resueltos }}</strong><span>Resueltos</span></article>
+    </section>
+    <section class="filters" aria-label="Filtros de reportes">
+      <label>Buscar<input type="search" [(ngModel)]="filtroTexto" placeholder="Descripción, zona o incidente"></label>
+      <label>Estado<select [(ngModel)]="filtroEstado"><option value="TODOS">Todos los estados</option><option value="PENDIENTE">Pendiente</option><option value="EN_PROCESO">En proceso</option><option value="UBICANDO">Ubicando</option><option value="INVESTIGANDO">Investigando</option><option value="PENDIENTE_APROBACION">Pendiente de aprobación</option><option value="RESUELTO">Resuelto</option><option value="CANCELADO">Cancelado</option></select></label>
+    </section>
+    <p class="loading" *ngIf="cargando()">Cargando reportes…</p><p class="empty" *ngIf="!cargando() && reportesFiltrados().length === 0">No hay reportes que coincidan con los filtros.</p>
+    <section class="report-list" *ngIf="!cargando()">
+      <article class="report-card" *ngFor="let reporte of reportesFiltrados(); trackBy: trackById">
+        <div class="report-heading"><div><p class="report-id">Reporte #{{ reporte.id }}</p><h2>{{ nombreTipo(reporte.tipoIncidenteId) }}</h2><p>{{ nombreZona(reporte.zonaId) }} · {{ reporte.fechaCreacion | date:'medium' }}</p></div><span class="status" [attr.data-status]="estado(reporte)">{{ estado(reporte).replaceAll('_', ' ') }}</span></div>
+        <p class="description">{{ reporte.descripcion || 'Sin descripción registrada.' }}</p><p class="meta">{{ reporte.isAnonimo ? 'Reporte anónimo' : (reporte.contacto || 'Sin contacto') }}</p>
+        <div class="assignment" *ngIf="puedeAsignarse(reporte)">
+          <label>Prioridad<select [(ngModel)]="prioridadSeleccionada[reporte.id!]" [disabled]="procesandoId() === reporte.id"><option value="BAJA">Baja</option><option value="MEDIA">Media</option><option value="ALTA">Alta</option></select></label>
+          <label>Agente de seguridad<select [(ngModel)]="seguridadSeleccionada[reporte.id!]" [disabled]="procesandoId() === reporte.id"><option [ngValue]="null">Selecciona un agente</option><option *ngFor="let agente of seguridad(); trackBy: trackById" [ngValue]="agente.id">{{ agente.nombreCompleto || agente.username }}</option></select></label>
+          <button type="button" class="primary-button" (click)="asignar(reporte)" [disabled]="procesandoId() === reporte.id">Asignar</button>
         </div>
-      </div>
-    </div>
+        <div class="decision" *ngIf="puedeDecidir(reporte)"><label>Comentario administrativo<textarea [(ngModel)]="comentario[reporte.id!]" rows="3" placeholder="Indica el motivo de tu decisión"></textarea></label><div><button type="button" class="secondary-button" (click)="rechazar(reporte)" [disabled]="procesandoId() === reporte.id">Devolver a investigación</button><button type="button" class="primary-button" (click)="resolver(reporte)" [disabled]="procesandoId() === reporte.id">Aprobar y resolver</button></div></div>
+      </article>
+    </section>
+  </ng-container>
 
-    <!-- TÍTULO PRINCIPAL DEL DASHBOARD -->
-    <h1 class="text-xl sm:text-2xl lg:text-3xl mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
-      <!-- Icono de gráfico de barras (BarChart3 icon) como marcador de posición. -->
-      <i class="barchart3-icon h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 text-primary"></i>
-      Panel de Administración
-    </h1>
-
-    <!-- Gráficos de Chart.js -->
-    <div class="charts-grid">
-      <app-chart-card [title]="'Estado de Reportes'" [chartData]="reportStatusChartData"></app-chart-card>
-      <app-chart-card [title]="'Zonas con Reportes'" [chartData]="zoneChartData"></app-chart-card>
-      <app-chart-card [title]="'Reportes Enviados por Día'" [chartData]="reportsSentChartData"></app-chart-card>
-    </div>
-
-
-    <!-- PESTAÑAS DE NAVEGACIÓN -->
-    <!-- Móvil: fila horizontal desplazable; sm+: grid regular de 5 columnas -->
-    <div class="tabs-list flex gap-2 overflow-x-auto pb-2 flex-nowrap lg:grid lg:grid-cols-5 w-full mb-4 lg:mb-6 h-auto">
-    <!-- PESTAÑA 1: Reportes Recientes -->
-  <a class="tabs-trigger inline-flex items-center gap-1 lg:gap-2 text-xs lg:text-sm p-2 lg:p-3 min-w-[140px] lg:min-w-0 whitespace-nowrap" [routerLink]="['/admin/recientes']" routerLinkActive="active" (click)="setActiveTab('recent')">
-      <!-- Icono de archivo de texto (FileText icon) como marcador de posición. -->
-      <i class="file-text-icon h-3 w-3 sm:h-4 sm:w-4"></i>
-      <span class="hidden sm:inline">Reportes</span> Recientes
-    </a>
-    <!-- PESTAÑA 2: En Proceso -->
-  <a class="tabs-trigger inline-flex items-center gap-1 lg:gap-2 text-xs lg:text-sm p-2 lg:p-3 min-w-[140px] lg:min-w-0 whitespace-nowrap" [routerLink]="['/admin/en-proceso']" routerLinkActive="active" (click)="setActiveTab('in-process')">
-      <!-- Icono de reloj (Clock icon) como marcador de posición. -->
-      <i class="clock-icon h-3 w-3 sm:h-4 sm:w-4"></i>
-      <span class="hidden sm:inline">En</span> Proceso
-    </a>
-    <!-- PESTAÑA 3: Pendiente Aprobación -->
-  <a class="tabs-trigger inline-flex items-center gap-1 lg:gap-2 text-xs lg:text-sm p-2 lg:p-3 min-w-[140px] lg:min-w-0 whitespace-nowrap" [routerLink]="['/admin/pend-aprobacion']" routerLinkActive="active" (click)="setActiveTab('pending-approval')">
-      <!-- Icono de círculo de alerta (AlertCircle icon) como marcador de posición. -->
-      <i class="alert-circle-icon h-3 w-3 sm:h-4 sm:w-4"></i>
-      <span class="hidden lg:inline">Pend.</span> Aprobación <!-- Marcador de posición para el número de reportes pendientes de aprobación. -->
-    </a>
-    <!-- PESTAÑA 4: Resueltos -->
-  <a class="tabs-trigger inline-flex items-center gap-1 lg:gap-2 text-xs lg:text-sm p-2 lg:p-3 min-w-[140px] lg:min-w-0 whitespace-nowrap" [routerLink]="['/admin/resueltos']" routerLinkActive="active" (click)="setActiveTab('resolved')">
-      <!-- Icono de círculo de verificación (CheckCircle icon) como marcador de posición. -->
-      <i class="check-circle-icon h-3 w-3 sm:h-4 sm:w-4"></i>
-      Resueltos
-    </a>
-    <!-- PESTAÑA 5: Cancelados -->
-  <a class="tabs-trigger inline-flex items-center gap-1 lg:gap-2 text-xs lg:text-sm p-2 lg:p-3 min-w-[140px] lg:min-w-0 whitespace-nowrap" [routerLink]="['/admin/cancelados']" routerLinkActive="active" (click)="setActiveTab('cancelled')">
-      <!-- Icono de X (X icon) como marcador de posición. -->
-      <i class="x-icon h-3 w-3 sm:h-4 sm:w-4"></i>
-      Cancelados
-    </a>
-    </div>
-
-    <!-- SECCIÓN DE TARJETAS DE REPORTES: cada pestaña ahora vive en su propio componente standalone -->
-    <div *ngIf="activeTab === 'recent'">
-      <app-reportes-recientes></app-reportes-recientes>
-    </div>
-
-    <div *ngIf="activeTab === 'in-process'">
-      <app-en-proceso></app-en-proceso>
-    </div>
-
-    <div *ngIf="activeTab === 'pending-approval'">
-      <app-pend-aprobacion></app-pend-aprobacion>
-    </div>
-
-    <div *ngIf="activeTab === 'resolved'">
-      <app-pend-resueltos></app-pend-resueltos>
-    </div>
-
-    <div *ngIf="activeTab === 'cancelled'">
-      <app-cancelados></app-cancelados>
-    </div>
-  </main>
-</div>
+  <ng-container *ngIf="vista() === 'zonas'">
+    <section class="zone-form" aria-labelledby="zone-form-title"><h2 id="zone-form-title">{{ zonaEnEdicion ? 'Editar zona' : 'Nueva zona' }}</h2><label>Nombre<input [(ngModel)]="zonaForm.nombre" maxlength="100"></label><label>Descripción<textarea [(ngModel)]="zonaForm.descripcion" rows="3" maxlength="500"></textarea></label><label>Sede<select [(ngModel)]="zonaForm.sedeId"><option [ngValue]="null">Selecciona una sede</option><option *ngFor="let sede of sedes(); trackBy: trackById" [ngValue]="sede.id">{{ sede.nombre }}</option></select></label><div><button type="button" class="primary-button" (click)="guardarZona()" [disabled]="procesandoId() !== null">Guardar zona</button><button type="button" class="secondary-button" *ngIf="zonaEnEdicion" (click)="cancelarEdicionZona()">Cancelar</button></div></section>
+    <p class="loading" *ngIf="cargando()">Cargando zonas…</p>
+    <section class="zone-list" *ngIf="!cargando()"><article *ngFor="let zona of zonas(); trackBy: trackById"><div><h2>{{ zona.nombre }}</h2><p>{{ zona.descripcion }}</p><small>{{ nombreSede(zona.sedeId) }} · {{ zona.reportCount ?? 0 }} reportes</small></div><span class="zone-status">{{ estadoZona(zona) }}</span><div class="actions"><button type="button" class="secondary-button" (click)="editarZona(zona)">Editar</button><button type="button" class="danger-button" (click)="eliminarZona(zona)" [disabled]="procesandoId() === zona.id">Eliminar</button></div></article></section>
+  </ng-container>
+</section>

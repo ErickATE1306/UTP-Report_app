@@ -1,185 +1,122 @@
-// Importa el decorador Component de Angular core para definir un componente.
-import { Component, OnInit } from '@angular/core';
-// Importa el servicio de autenticación para manejar la lógica de inicio y cierre de sesión.
-import { AuthService } from '../../services/auth.service';
-// Importa el servicio de perfil para cargar y gestionar la información del perfil del usuario.
-import { PerfilService } from '../../services/perfil.service';
-// Importa RouterModule para habilitar las funcionalidades de enrutamiento en el componente.
-import { CommonModule } from '@angular/common'; // Import CommonModule for ngIf, ngFor
-import { RouterModule, Router, ActivatedRoute } from '@angular/router';
-// Import standalone tab components so they can be used inside the template
-import { ReportesRecientes } from './reportes-recientes/reportes-recientes';
-import { EnProceso } from './en-proceso/en-proceso';
-import { PendAprobacion } from './pend-aprobacion/pend-aprobacion';
-import { PendResueltos } from './pend-resueltos/pend-resueltos';
-import { Cancelados } from './cancelados/cancelados';
-// Import Chart.js related components and services
-import { ChartCardComponent } from '../../shared/chart-card/chart-card.component';
-import { ChartDataService } from '../../services/chart-data.service';
-import { ChartData } from '../../interfaces/chart-data.interface';
+import { Component, OnInit, computed, signal } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ReporteDto } from '../../api/models/reporte-dto';
+import { SedeResponse } from '../../api/models/sede-response';
+import { TipoIncidenteResponse } from '../../api/models/tipo-incidente-response';
+import { UsuarioDto } from '../../api/models/usuario-dto';
+import { ZonaResponse } from '../../api/models/zona-response';
+import { AdminApiService, EstadoReporte, PrioridadReporte } from '../data/admin-api.service';
 
-// Decorador @Component que define los metadatos del componente.
+type VistaAdmin = 'reportes' | 'zonas';
+type FiltroEstado = EstadoReporte | 'TODOS';
+
 @Component({
-  selector: 'app-inicio-admin', // El selector CSS que se usa para instanciar este componente en una plantilla.
-  standalone: true, // Indica que este es un componente independiente, no requiere un NgModule.
-  imports: [
-    RouterModule,
-    CommonModule,
-    ReportesRecientes,
-    EnProceso,
-    PendAprobacion,
-    PendResueltos,
-    Cancelados,
-    ChartCardComponent // Import the standalone ChartCardComponent
-  ], // Módulos y componentes que este componente importa y utiliza.
-  templateUrl: './inicio.html', // La ruta al archivo de plantilla HTML de este componente.
-  styleUrl: './inicio.scss' // La ruta al archivo de estilos SCSS de este componente.
+  selector: 'app-inicio-admin', standalone: true,
+  imports: [CommonModule, FormsModule, DatePipe],
+  templateUrl: './inicio.html', styleUrl: './inicio.scss',
 })
 export class InicioAdmin implements OnInit {
-  nombreAdmin: string = ''; // Propiedad para almacenar el nombre completo del administrador.
-  mobileOpen: boolean = false; // Estado booleano para controlar la visibilidad del panel móvil del navbar.
-  activeTab: string = 'recent'; // Propiedad para controlar la pestaña activa, por defecto 'recent'.
+  readonly vista = signal<VistaAdmin>('reportes');
+  readonly reportes = signal<ReporteDto[]>([]); readonly zonas = signal<ZonaResponse[]>([]);
+  readonly sedes = signal<SedeResponse[]>([]); readonly tipos = signal<TipoIncidenteResponse[]>([]);
+  readonly seguridad = signal<UsuarioDto[]>([]); readonly cargando = signal(true);
+  readonly procesandoId = signal<number | null>(null); readonly error = signal<string | null>(null);
+  readonly exito = signal<string | null>(null);
+  filtroEstado: FiltroEstado = 'TODOS'; filtroTexto = '';
+  prioridadSeleccionada: Record<number, PrioridadReporte> = {};
+  seguridadSeleccionada: Record<number, number | null> = {};
+  comentario: Record<number, string> = {};
+  zonaEnEdicion: number | null = null;
+  zonaForm = { nombre: '', descripcion: '', sedeId: null as number | null };
 
-  // Chart data properties
-  reportStatusChartData: ChartData | null = null;
-  zoneChartData: ChartData | null = null;
-  reportsSentChartData: ChartData | null = null;
-
-  // Constructor del componente, inyecta AuthService, PerfilService y ChartDataService.
-  constructor(
-    public auth: AuthService,
-    private perfil: PerfilService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private chartDataService: ChartDataService // Inject ChartDataService
-  ){
-    this.perfil.cargarPerfil(); // Carga el perfil del usuario al inicializar el componente.
-    // Establece un temporizador para obtener el nombre del administrador después de un breve retraso.
-    setTimeout(()=>{
-      const p = this.perfil.perfil(); // Obtiene el perfil del servicio.
-      if(p) this.nombreAdmin = p.nombreCompleto; // Si el perfil existe, asigna el nombre completo.
-    },300);
-    // Sincroniza la pestaña con el parámetro :tab y reutiliza el mismo componente
-    this.route.paramMap.subscribe(params => {
-      const slug = params.get('tab') || 'recientes';
-      this.activeTab = this.slugToTab(slug);
+  readonly reportesFiltrados = computed(() => {
+    const texto = this.filtroTexto.trim().toLowerCase();
+    return this.reportes().filter((reporte) => {
+      const estado = reporte.reporteGestion?.estado ?? 'PENDIENTE';
+      const coincideEstado = this.filtroEstado === 'TODOS' || estado === this.filtroEstado;
+      const coincideTexto = !texto || [reporte.descripcion, this.nombreZona(reporte.zonaId), this.nombreTipo(reporte.tipoIncidenteId)]
+        .filter((valor): valor is string => Boolean(valor)).some((valor) => valor.toLowerCase().includes(texto));
+      return coincideEstado && coincideTexto;
     });
+  });
+  readonly resumen = computed(() => {
+    const reportes = this.reportes();
+    return {
+      total: reportes.length,
+      pendientes: reportes.filter((r) => (r.reporteGestion?.estado ?? 'PENDIENTE') === 'PENDIENTE').length,
+      proceso: reportes.filter((r) => ['EN_PROCESO', 'UBICANDO', 'INVESTIGANDO'].includes(r.reporteGestion?.estado ?? '')).length,
+      aprobacion: reportes.filter((r) => r.reporteGestion?.estado === 'PENDIENTE_APROBACION').length,
+      resueltos: reportes.filter((r) => r.reporteGestion?.estado === 'RESUELTO').length,
+    };
+  });
+
+  constructor(private readonly adminApi: AdminApiService) {}
+  ngOnInit(): void { void this.recargar(); }
+
+  async recargar(): Promise<void> {
+    this.cargando.set(true); this.error.set(null);
+    try {
+      const [reportes, zonas, sedes, tipos, seguridad] = await this.adminApi.cargarDatos();
+      this.reportes.set(reportes); this.zonas.set(zonas); this.sedes.set(sedes); this.tipos.set(tipos);
+      this.seguridad.set(seguridad.filter((usuario) => usuario.enabled !== false));
+      for (const reporte of reportes) if (reporte.id) {
+        this.prioridadSeleccionada[reporte.id] ??= reporte.reporteGestion?.prioridad ?? 'MEDIA';
+        this.seguridadSeleccionada[reporte.id] ??= reporte.seguridadAsignadoId ?? null;
+        this.comentario[reporte.id] ??= reporte.mensajeAdmin ?? '';
+      }
+    } catch (error: unknown) { this.error.set(this.mensajeError(error, 'No se pudieron cargar los datos del panel.')); }
+    finally { this.cargando.set(false); }
   }
 
-  ngOnInit(): void {
-    this.loadChartData();
+  seleccionarVista(vista: VistaAdmin): void { this.vista.set(vista); this.error.set(null); this.exito.set(null); }
+  async asignar(reporte: ReporteDto): Promise<void> {
+    if (!reporte.id) return;
+    const seguridadId = this.seguridadSeleccionada[reporte.id], prioridad = this.prioridadSeleccionada[reporte.id];
+    if (!seguridadId || !prioridad) { this.error.set('Selecciona una prioridad y un agente de seguridad antes de asignar.'); return; }
+    await this.ejecutar(reporte.id, async () => { await this.adminApi.asignarReporte(reporte.id!, seguridadId, prioridad); this.exito.set('Reporte asignado correctamente.'); });
   }
-
-  private loadChartData(): void {
-    // Load Report Status Count
-    this.chartDataService.getReportStatusCount().subscribe(data => {
-      this.reportStatusChartData = {
-        labels: data.map(item => item.status),
-        datasets: [{
-          label: 'Cantidad de Reportes',
-          data: data.map(item => item.count),
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.6)',
-            'rgba(54, 162, 235, 0.6)',
-            'rgba(255, 206, 86, 0.6)',
-            'rgba(75, 192, 192, 0.6)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)'
-          ],
-          borderWidth: 1
-        }]
-      };
-    });
-
-    // Load Zone Count
-    this.chartDataService.getZoneCount().subscribe(data => {
-      this.zoneChartData = {
-        labels: data.map(item => item.zoneName),
-        datasets: [{
-          label: 'Reportes por Zona',
-          data: data.map(item => item.count),
-          backgroundColor: [
-            'rgba(153, 102, 255, 0.6)',
-            'rgba(255, 159, 64, 0.6)',
-            'rgba(255, 99, 132, 0.6)',
-            'rgba(54, 162, 235, 0.6)',
-            'rgba(75, 192, 192, 0.6)'
-          ],
-          borderColor: [
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(75, 192, 192, 1)'
-          ],
-          borderWidth: 1
-        }]
-      };
-    });
-
-    // Load Reports Sent Count
-    this.chartDataService.getReportsSentCount().subscribe(data => {
-      this.reportsSentChartData = {
-        labels: data.map(item => item.date),
-        datasets: [{
-          label: 'Reportes Enviados',
-          data: data.map(item => item.count),
-          backgroundColor: ['rgba(100, 200, 150, 0.6)'],
-          borderColor: ['rgba(100, 200, 150, 1)'],
-          borderWidth: 1
-        }]
-      };
-    });
+  async resolver(reporte: ReporteDto): Promise<void> {
+    if (reporte.id) await this.ejecutar(reporte.id, async () => { await this.adminApi.resolverReporte(reporte.id!, this.comentario[reporte.id!] ?? ''); this.exito.set('Reporte marcado como resuelto.'); });
   }
-
-  /**
-   * Establece la pestaña activa.
-   * @param tabName El nombre de la pestaña a activar.
-   */
-  setActiveTab(tabName: string) {
-    this.activeTab = tabName;
-    // La navegación la realiza el [routerLink] de las pestañas; aquí solo actualizamos estado inmediato
+  async rechazar(reporte: ReporteDto): Promise<void> {
+    if (reporte.id) await this.ejecutar(reporte.id, async () => { await this.adminApi.rechazarReporte(reporte.id!, this.comentario[reporte.id!] ?? ''); this.exito.set('El reporte fue devuelto a investigación.'); });
   }
-
-  private slugToTab(slug: string): string {
-    switch(slug){
-      case 'en-proceso': return 'in-process';
-      case 'pend-aprobacion': return 'pending-approval';
-      case 'resueltos': return 'resolved';
-      case 'cancelados': return 'cancelled';
-      case 'recientes':
-      default: return 'recent';
-    }
+  editarZona(zona?: ZonaResponse): void {
+    this.zonaEnEdicion = zona?.id ?? null;
+    this.zonaForm = { nombre: zona?.nombre ?? '', descripcion: zona?.descripcion ?? '', sedeId: zona?.sedeId ?? this.sedes()[0]?.id ?? null };
   }
-
-  private tabToSlug(tab: string): string {
-    switch(tab){
-      case 'in-process': return 'en-proceso';
-      case 'pending-approval': return 'pend-aprobacion';
-      case 'resolved': return 'resueltos';
-      case 'cancelled': return 'cancelados';
-      case 'recent':
-      default: return 'recientes';
-    }
+  cancelarEdicionZona(): void { this.zonaEnEdicion = null; this.zonaForm = { nombre: '', descripcion: '', sedeId: null }; }
+  async guardarZona(): Promise<void> {
+    const { nombre, descripcion, sedeId } = this.zonaForm;
+    if (!nombre.trim() || !descripcion.trim() || !sedeId) { this.error.set('Completa nombre, descripción y sede para guardar la zona.'); return; }
+    this.procesandoId.set(this.zonaEnEdicion ?? -1); this.error.set(null);
+    try {
+      if (this.zonaEnEdicion) await this.adminApi.actualizarZona(this.zonaEnEdicion, nombre.trim(), descripcion.trim(), sedeId);
+      else await this.adminApi.crearZona(nombre.trim(), descripcion.trim(), sedeId);
+      this.exito.set(this.zonaEnEdicion ? 'Zona actualizada correctamente.' : 'Zona creada correctamente.'); this.cancelarEdicionZona(); await this.recargar();
+    } catch (error: unknown) { this.error.set(this.mensajeError(error, 'No se pudo guardar la zona.')); }
+    finally { this.procesandoId.set(null); }
   }
-
-  /**
-   * Cierra la sesión del usuario administrador.
-   * Utiliza el método `logout` del `AuthService`.
-   */
-  logout(){ this.auth.logout(); }
-
-  /**
-   * Alterna el estado de visibilidad del panel móvil del navbar.
-   */
-  toggleMobile(){ this.mobileOpen = !this.mobileOpen; }
-
-  /**
-   * Cierra el panel móvil del navbar, estableciendo su estado a `false`.
-   */
-  closeMobile(){ this.mobileOpen = false; }
+  async eliminarZona(zona: ZonaResponse): Promise<void> {
+    if (!zona.id || !confirm(`¿Eliminar la zona “${zona.nombre ?? 'sin nombre'}”?`)) return;
+    this.procesandoId.set(zona.id); this.error.set(null);
+    try { await this.adminApi.eliminarZona(zona.id); this.exito.set('Zona eliminada correctamente.'); await this.recargar(); }
+    catch (error: unknown) { this.error.set(this.mensajeError(error, 'No se pudo eliminar la zona.')); }
+    finally { this.procesandoId.set(null); }
+  }
+  nombreZona(id?: number): string { return this.zonas().find((zona) => zona.id === id)?.nombre ?? 'Zona no disponible'; }
+  nombreTipo(id?: number): string { return this.tipos().find((tipo) => tipo.id === id)?.nombre ?? 'Incidente sin clasificar'; }
+  nombreSede(id?: number): string { return this.sedes().find((sede) => sede.id === id)?.nombre ?? 'Sede no disponible'; }
+  estadoZona(zona: ZonaResponse): string { return zona.estado?.replace('ZONA_', '').replace('_', ' ') ?? 'Sin estado'; }
+  estado(reporte: ReporteDto): EstadoReporte { return reporte.reporteGestion?.estado ?? 'PENDIENTE'; }
+  puedeAsignarse(reporte: ReporteDto): boolean { return this.estado(reporte) === 'PENDIENTE'; }
+  puedeDecidir(reporte: ReporteDto): boolean { return this.estado(reporte) === 'PENDIENTE_APROBACION'; }
+  trackById(_: number, item: { id?: number }): number | undefined { return item.id; }
+  private async ejecutar(id: number, accion: () => Promise<void>): Promise<void> {
+    this.procesandoId.set(id); this.error.set(null);
+    try { await accion(); await this.recargar(); } catch (error: unknown) { this.error.set(this.mensajeError(error, 'No se pudo actualizar el reporte.')); }
+    finally { this.procesandoId.set(null); }
+  }
+  private mensajeError(error: unknown, alternativa: string): string { return error instanceof Error && error.message ? error.message : alternativa; }
 }
