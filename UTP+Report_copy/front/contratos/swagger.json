@@ -1,0 +1,2180 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "UTP+ Reporta API",
+        "description": "API REST del monolito modular UTP+ Reporta",
+        "version": "v1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Generated server url"
+        }
+    ],
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "paths": {
+        "/api/zonas/{id}": {
+            "put": {
+                "tags": [
+                    "zona-controller"
+                ],
+                "operationId": "updateZona",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "nombre",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "descripcion",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sedeId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "foto": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ZonaResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "zona-controller"
+                ],
+                "operationId": "deleteZona",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/usuarios/{id}": {
+            "put": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "updateUsuario",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UsuarioUpdateRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UsuarioDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuarios/{id}/enabled": {
+            "put": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "updateUsuarioEnabledStatus",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "enabled",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UsuarioDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tipoincidentes/{id}": {
+            "get": {
+                "tags": [
+                    "tipo-incidente-controller"
+                ],
+                "operationId": "getTipoIncidenteById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TipoIncidenteResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "tipo-incidente-controller"
+                ],
+                "operationId": "updateTipoIncidente",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TipoIncidenteRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TipoIncidenteResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "tipo-incidente-controller"
+                ],
+                "operationId": "deleteTipoIncidente",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/sedes/{id}": {
+            "get": {
+                "tags": [
+                    "sede-controller"
+                ],
+                "operationId": "obtenerSedePorId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SedeResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "sede-controller"
+                ],
+                "operationId": "actualizarSede",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SedeRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SedeResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "sede-controller"
+                ],
+                "operationId": "eliminarSede",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/reportes/{id}": {
+            "get": {
+                "tags": [
+                    "reporte-controller"
+                ],
+                "operationId": "getReporteById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReporteDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "reporte-controller"
+                ],
+                "operationId": "updateReporte",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "tipoIncidenteId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "zonaId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "descripcion",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "isAnonimo",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "contacto",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "usuarioId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "foto": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReporteDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "reporte-controller"
+                ],
+                "operationId": "deleteReporte",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/reportes/gestion/{reporteId}/zona-ubicada": {
+            "put": {
+                "tags": [
+                    "reporte-gestion-controller"
+                ],
+                "operationId": "zonaUbicada",
+                "parameters": [
+                    {
+                        "name": "reporteId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReporteGestionDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reportes/gestion/{reporteId}/rechazar-admin": {
+            "put": {
+                "tags": [
+                    "reporte-gestion-controller"
+                ],
+                "operationId": "rechazarPorAdmin",
+                "parameters": [
+                    {
+                        "name": "reporteId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "mensajeAdmin",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReporteGestionDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reportes/gestion/{reporteId}/marcar-resuelto-admin": {
+            "put": {
+                "tags": [
+                    "reporte-gestion-controller"
+                ],
+                "operationId": "marcarComoResueltoPorAdmin",
+                "parameters": [
+                    {
+                        "name": "reporteId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "mensajeAdmin",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReporteGestionDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reportes/gestion/{reporteId}/ir-a-zona": {
+            "put": {
+                "tags": [
+                    "reporte-gestion-controller"
+                ],
+                "operationId": "irAZona",
+                "parameters": [
+                    {
+                        "name": "reporteId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReporteGestionDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reportes/gestion/{reporteId}/completar": {
+            "put": {
+                "tags": [
+                    "reporte-gestion-controller"
+                ],
+                "operationId": "completarReporte",
+                "parameters": [
+                    {
+                        "name": "reporteId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "mensajeSeguridad",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReporteGestionDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/zonas": {
+            "get": {
+                "tags": [
+                    "zona-controller"
+                ],
+                "operationId": "listarZonas",
+                "parameters": [
+                    {
+                        "name": "includeInactive",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ZonaResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "zona-controller"
+                ],
+                "operationId": "crearZona",
+                "parameters": [
+                    {
+                        "name": "nombre",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "descripcion",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sedeId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "foto": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ZonaResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tipoincidentes": {
+            "get": {
+                "tags": [
+                    "tipo-incidente-controller"
+                ],
+                "operationId": "getAllTipoIncidentes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TipoIncidenteResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "tipo-incidente-controller"
+                ],
+                "operationId": "createTipoIncidente",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TipoIncidenteRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TipoIncidenteResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sedes": {
+            "get": {
+                "tags": [
+                    "sede-controller"
+                ],
+                "operationId": "listarSedes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SedeResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "sede-controller"
+                ],
+                "operationId": "crearSede",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SedeRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SedeResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reportes": {
+            "get": {
+                "tags": [
+                    "reporte-controller"
+                ],
+                "operationId": "getAllReportes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ReporteDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "reporte-controller"
+                ],
+                "operationId": "createReporte",
+                "parameters": [
+                    {
+                        "name": "tipoIncidenteId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "zonaId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "descripcion",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "isAnonimo",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "contacto",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "usuarioId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "foto": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReporteDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reportes/gestion/{reporteId}": {
+            "post": {
+                "tags": [
+                    "reporte-gestion-controller"
+                ],
+                "operationId": "createReporteGestion",
+                "parameters": [
+                    {
+                        "name": "reporteId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "estado",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "PENDIENTE",
+                                "EN_PROCESO",
+                                "UBICANDO",
+                                "INVESTIGANDO",
+                                "PENDIENTE_APROBACION",
+                                "RESUELTO",
+                                "CANCELADO"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "prioridad",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "BAJA",
+                                "MEDIA",
+                                "ALTA"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "seguridadId",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReporteGestionDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/registrarUsuario": {
+            "post": {
+                "tags": [
+                    "auth-controller"
+                ],
+                "operationId": "registrarUsuario",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistroUsuarioDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/registrarSeguridad": {
+            "post": {
+                "tags": [
+                    "auth-controller"
+                ],
+                "operationId": "registrarSeguridad",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistroSeguridadDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/registrarAdmin": {
+            "post": {
+                "tags": [
+                    "auth-controller"
+                ],
+                "operationId": "registrarAdmin",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistroAdminDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "auth-controller"
+                ],
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/zonas/{id}/activo": {
+            "patch": {
+                "tags": [
+                    "zona-controller"
+                ],
+                "operationId": "setActivoZona",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "activo",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ZonaResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/zonas/sede/{sedeId}": {
+            "get": {
+                "tags": [
+                    "zona-controller"
+                ],
+                "operationId": "listarZonasPorSede",
+                "parameters": [
+                    {
+                        "name": "sedeId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "includeInactive",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ZonaResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuarios": {
+            "get": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "getAllUsuarios",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UsuarioDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuarios/tipo/docente": {
+            "get": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "getUsuariosByTipoDocente",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UsuarioDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuarios/tipo/alumno": {
+            "get": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "getUsuariosByTipoAlumno",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UsuarioDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuarios/seguridad/filter": {
+            "get": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "getFilteredSeguridadUsers",
+                "parameters": [
+                    {
+                        "name": "zonaId",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "sedeId",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UsuarioDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuarios/rol/usuario": {
+            "get": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "getUsuariosByRolUsuario",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UsuarioDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuarios/rol/seguridad": {
+            "get": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "getUsuariosByRolSeguridad",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UsuarioDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuarios/rol/admin": {
+            "get": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "getUsuariosByRolAdmin",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UsuarioDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuarios/me": {
+            "get": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "miPerfil",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UsuarioDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuarios/excluding-superadmin": {
+            "get": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "getAllUsersExcludingSuperAdmin",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UsuarioDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuarios/enabled": {
+            "get": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "getUsuariosByEnabledStatus",
+                "parameters": [
+                    {
+                        "name": "enabled",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UsuarioDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuarios/codigo/{codigo}": {
+            "get": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "getUsuarioByCodigo",
+                "parameters": [
+                    {
+                        "name": "codigo",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UsuarioDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuarios/check-telefono": {
+            "get": {
+                "tags": [
+                    "usuario-controller"
+                ],
+                "operationId": "checkTelefonoUnique",
+                "parameters": [
+                    {
+                        "name": "telefono",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/time/peru-datetime": {
+            "get": {
+                "tags": [
+                    "time-controller"
+                ],
+                "operationId": "getPeruDateTime",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/time/peru-date": {
+            "get": {
+                "tags": [
+                    "time-controller"
+                ],
+                "operationId": "getPeruDate",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "date"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reportes/filtered": {
+            "get": {
+                "tags": [
+                    "reporte-controller"
+                ],
+                "operationId": "getFilteredReports",
+                "parameters": [
+                    {
+                        "name": "prioridad",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "BAJA",
+                                "MEDIA",
+                                "ALTA"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "estado",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "PENDIENTE",
+                                "EN_PROCESO",
+                                "UBICANDO",
+                                "INVESTIGANDO",
+                                "PENDIENTE_APROBACION",
+                                "RESUELTO",
+                                "CANCELADO"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "isAnonimo",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ReporteDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reportes/filter": {
+            "get": {
+                "tags": [
+                    "reporte-controller"
+                ],
+                "operationId": "getFilteredReportes",
+                "parameters": [
+                    {
+                        "name": "zonaId",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "sedeId",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ReporteDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reportes/export/excel": {
+            "get": {
+                "tags": [
+                    "reporte-controller"
+                ],
+                "operationId": "exportToExcel",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/reportes/by-username/{username}": {
+            "get": {
+                "tags": [
+                    "reporte-controller"
+                ],
+                "operationId": "getReportsByUsername",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ReporteDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ZonaResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "nombre": {
+                        "type": "string"
+                    },
+                    "descripcion": {
+                        "type": "string"
+                    },
+                    "foto": {
+                        "type": "string",
+                        "format": "byte"
+                    },
+                    "sedeId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "activo": {
+                        "type": "boolean"
+                    },
+                    "estado": {
+                        "type": "string",
+                        "enum": [
+                            "ZONA_SEGURA",
+                            "ZONA_PRECAUCION",
+                            "ZONA_PELIGROSA"
+                        ]
+                    },
+                    "reportCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "UsuarioUpdateRequest": {
+                "type": "object",
+                "properties": {
+                    "nombreCompleto": {
+                        "type": "string"
+                    },
+                    "correo": {
+                        "type": "string"
+                    },
+                    "telefono": {
+                        "type": "string"
+                    },
+                    "tipoUsuario": {
+                        "type": "string",
+                        "enum": [
+                            "ALUMNO",
+                            "DOCENTE"
+                        ]
+                    },
+                    "sedeNombre": {
+                        "type": "string"
+                    },
+                    "zonasNombres": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "UsuarioDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "nombreCompleto": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "correo": {
+                        "type": "string"
+                    },
+                    "telefono": {
+                        "type": "string"
+                    },
+                    "tipoUsuario": {
+                        "type": "string",
+                        "enum": [
+                            "ALUMNO",
+                            "DOCENTE"
+                        ]
+                    },
+                    "sedeNombre": {
+                        "type": "string"
+                    },
+                    "zonasNombres": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "intentos": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "fechaUltimoReporte": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "TipoIncidenteRequest": {
+                "type": "object",
+                "properties": {
+                    "nombre": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "descripcion": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "nombre"
+                ]
+            },
+            "TipoIncidenteResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "nombre": {
+                        "type": "string"
+                    },
+                    "descripcion": {
+                        "type": "string"
+                    }
+                }
+            },
+            "SedeRequest": {
+                "type": "object",
+                "properties": {
+                    "nombre": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "nombre"
+                ]
+            },
+            "SedeResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "nombre": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ReporteDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "tipoIncidenteId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "zonaId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "descripcion": {
+                        "type": "string"
+                    },
+                    "foto": {
+                        "type": "string",
+                        "format": "byte"
+                    },
+                    "fechaCreacion": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "isAnonimo": {
+                        "type": "boolean"
+                    },
+                    "contacto": {
+                        "type": "string"
+                    },
+                    "usuarioId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "seguridadAsignadoId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "mensajeSeguridad": {
+                        "type": "string"
+                    },
+                    "mensajeAdmin": {
+                        "type": "string"
+                    },
+                    "reporteGestion": {
+                        "$ref": "#/components/schemas/ReporteGestionDTO"
+                    }
+                }
+            },
+            "ReporteGestionDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "estado": {
+                        "type": "string",
+                        "enum": [
+                            "PENDIENTE",
+                            "EN_PROCESO",
+                            "UBICANDO",
+                            "INVESTIGANDO",
+                            "PENDIENTE_APROBACION",
+                            "RESUELTO",
+                            "CANCELADO"
+                        ]
+                    },
+                    "prioridad": {
+                        "type": "string",
+                        "enum": [
+                            "BAJA",
+                            "MEDIA",
+                            "ALTA"
+                        ]
+                    },
+                    "fechaActualizacion": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "RegistroUsuarioDTO": {
+                "type": "object",
+                "properties": {
+                    "nombreCompleto": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "correo": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "telefono": {
+                        "type": "string"
+                    },
+                    "tipoUsuario": {
+                        "type": "string",
+                        "enum": [
+                            "ALUMNO",
+                            "DOCENTE"
+                        ]
+                    },
+                    "sedeId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "RegistroSeguridadDTO": {
+                "type": "object",
+                "properties": {
+                    "nombreCompleto": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "correo": {
+                        "type": "string"
+                    },
+                    "telefono": {
+                        "type": "string"
+                    },
+                    "sedeId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "zonaIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "uniqueItems": true
+                    }
+                }
+            },
+            "RegistroAdminDTO": {
+                "type": "object",
+                "properties": {
+                    "nombreCompleto": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "correo": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "telefono": {
+                        "type": "string"
+                    },
+                    "sedeId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "LoginDTO": {
+                "type": "object",
+                "properties": {
+                    "usernameOrCorreo": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

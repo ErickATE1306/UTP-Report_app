@@ -4,7 +4,7 @@
 This project is the backend service for the "UTP Reporta" application, a system designed to manage reports, incidents, and user interactions within the UTP environment. It provides a robust set of RESTful APIs, real-time notifications via WebSockets, and administrative functionalities to handle various types of reports and user roles.
 
 ## Technologies Used
-The backend is built using the Spring Boot framework with Java 21 and leverages several key technologies:
+The backend is built using the Spring Boot framework with Java 25 and leverages several key technologies:
 *   **Spring Boot:** Framework for building robust, stand-alone, production-grade Spring applications.
 *   **Spring Data JPA & Hibernate:** For efficient and object-relational mapping (ORM) database interactions.
 *   **MySQL:** Relational database management system.
@@ -20,7 +20,7 @@ The backend is built using the Spring Boot framework with Java 21 and leverages 
 
 ### Prerequisites
 Before running the application, ensure you have the following installed:
-*   **Java Development Kit (JDK) 21** or higher
+*   **Java Development Kit (JDK) 25** or higher
 *   **Maven** 3.x or higher
 *   **MySQL Server**
 *   (Optional for local email testing) **MailHog** or a similar SMTP testing tool, if `spring.mail.host` is set to `localhost:1025`.
