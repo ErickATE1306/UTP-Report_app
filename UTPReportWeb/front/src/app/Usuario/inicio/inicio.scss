@@ -1,0 +1,718 @@
+@use "sass:color";
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #4B5563; /* gray-600 */
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  &:hover {
+    color: #FF395C; /* primary-color */
+  }
+}
+.dark-mode { /* This targets the div.min-h-screen with the dark-mode class */
+  background-color: #121212; /* Fondo principal */
+  color: #f5f5f5; /* Texto principal */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-top: -16px;
+
+  /* Ensure main content area is dark */
+  main {
+    background-color: #121212 !important; /* Ensure main content area is dark */
+  }
+
+  .alert-banner {
+    background-color: #1f1f1f; /* Tarjetas o contenedores */
+    border-color: #2a2a2a; /* Inputs */
+    color: #f5f5f5; /* Texto principal */
+  }
+  .alert-banner .alert-text {
+    color: #f5f5f5; /* Texto principal */
+  }
+  .alert-banner .alert-icon {
+    color: #1e88e5; /* Botones con color de acento */
+  }
+
+  h2, h3 {
+    color: #f5f5f5; /* Texto principal */
+  }
+
+  .kpi-card {
+    background-color: transparent; /* Tarjetas o contenedores - transparent to show black root */
+    border-color: #2a2a2a; /* Inputs */
+    .text-gray-600 {
+      color: #b0b0b0; /* Texto secundario */
+    }
+    .text-blue-600, .text-green-600, .text-purple-600 {
+      color: #1e88e5; /* Botones con color de acento */
+    }
+  }
+  /* Specific tint for KPI utility background variants to keep colored identity but dark */
+  .kpi-card.bg-blue-50 { background-color: rgba(59,130,246,0.06) !important; border-color: rgba(59,130,246,0.14) !important; }
+  .kpi-card.bg-green-50 { background-color: rgba(34,197,94,0.06) !important; border-color: rgba(34,197,94,0.14) !important; }
+  .kpi-card.bg-purple-50 { background-color: rgba(168,85,247,0.06) !important; border-color: rgba(168,85,247,0.14) !important; }
+  .kpi-card .text-gray-600 { color: #cbd5e1 !important; }
+  .kpi-card .text-gray-700 { color: #e2e8f0 !important; }
+  .kpi-card.bg-blue-50, .kpi-card.bg-green-50, .kpi-card.bg-purple-50 {
+    background-color: transparent; /* Tarjetas o contenedores */
+    border-color: #2a2a2a; /* Inputs */
+  }
+
+    .report-main-button .border { border-color: #2a2a2a !important; }
+    .report-main-button .text-gray-700 { color: #b0b0b0; }
+    .report-main-button button.bg-gray-200 { background-color: rgba(255,255,255,0.03) !important; color: #b0b0b0 !important; }
+    .report-main-button button.bg-primary { background-color: #1e88e5 !important; &:hover { background-color: color.adjust(#1e88e5, $lightness: -10%) !important; } }
+    .report-main-button button.border-primary { border-color: #1e88e5 !important; color: #1e88e5 !important; &:hover { background-color: rgba(#1e88e5, 0.1) !important; } }
+
+  .zones-status-section .border-2 {
+    border-color: #2a2a2a; /* Inputs */
+  }
+  .zones-status-section h3 {
+    color: #f5f5f5; /* Texto principal */
+  }
+  .zones-status-section .text-gray-600,
+  .zones-status-section .text-gray-500 {
+    color: #b0b0b0; /* Texto secundario */
+  }
+  .zones-status-section .bg-green-500 { background-color: #28a745 !important; } /* Green for safe */
+  .zones-status-section .bg-yellow-500 { background-color: #ffc107 !important; } /* Yellow for caution */
+  .zones-status-section .bg-red-500 { background-color: #dc3545 !important; } /* Red for dangerous */
+
+  .quick-actions-section button {
+    background-color: #1f1f1f; /* Tarjetas o contenedores */
+    border-color: #2a2a2a; /* Inputs */
+    color: #f5f5f5; /* Texto principal */
+    &:hover {
+      background-color: #2a2a2a; /* Inputs */
+    }
+    .text-gray-800 {
+      color: #f5f5f5; /* Texto principal */
+    }
+    .text-primary {
+      color: #1e88e5 !important; /* Botones con color de acento */
+    }
+  }
+
+  .user-report-tracker .border-blue-200 {
+    border-color: #2a2a2a; /* Inputs */
+  }
+  .user-report-tracker .text-gray-500 {
+    color: #b0b0b0; /* Texto secundario */
+  }
+  .user-report-tracker .text-gray-600 {
+    color: #b0b0b0; /* Texto secundario */
+  }
+  .user-report-tracker .text-gray-700 {
+    color: #f5f5f5; /* Texto principal */
+  }
+  .user-report-tracker .bg-white {
+    background-color: #1f1f1f; /* Tarjetas o contenedores */
+    border-color: #2a2a2a; /* Inputs */
+    color: #f5f5f5; /* Texto principal */
+  }
+  .user-report-tracker .bg-gray-200 {
+    background-color: #2a2a2a; /* Inputs */
+  }
+  .user-report-tracker .bg-blue-500 { background-color: #1e88e5 !important; }
+  .user-report-tracker .bg-yellow-500 { background-color: #ffc107 !important; }
+  .user-report-tracker .bg-indigo-500 { background-color: #6610f2 !important; }
+  .user-report-tracker .bg-purple-500 { background-color: #6f42c1 !important; }
+  .user-report-tracker .bg-orange-500 { background-color: #fd7e14 !important; }
+  .user-report-tracker .bg-green-600 { background-color: #28a745 !important; }
+  .user-report-tracker .bg-red-600 { background-color: #dc3545 !important; }
+  .user-report-tracker .bg-gray-500 { background-color: #6c757d !important; }
+  .user-report-tracker .bg-gray-400 { background-color: #adb5bd !important; }
+
+
+  .companero-card {
+    background-color: #1f1f1f; /* Tarjetas o contenedores */
+    border-color: #2a2a2a; /* Inputs */
+    .text-gray-500 {
+      color: #b0b0b0; /* Texto secundario */
+    }
+    .text-gray-600 {
+      color: #b0b0b0; /* Texto secundario */
+    }
+    .text-gray-700 {
+      color: #f5f5f5; /* Texto principal */
+    }
+    &.bg-red-50, &.bg-yellow-100, &.bg-blue-50, &.bg-white {
+      background-color: #1f1f1f; /* Tarjetas o contenedores */
+      border-color: #2a2a2a; /* Inputs */
+    }
+    .text-primary {
+      color: #1e88e5 !important; /* Botones con color de acento */
+    }
+    .bg-primary\/10 {
+      background-color: rgba(#1e88e5, 0.1) !important; /* Light accent for primary/10 */
+      border-color: #1e88e5 !important;
+    }
+    .companero-card.prio-alta::before { background: #dc3545; }
+    .companero-card.prio-media::before { background: #ffc107; }
+    .companero-card.prio-baja::before { background: #1e88e5; }
+  }
+
+  /* Explicación del Flujo con Notificaciones */
+  section.mb-6.sm\:mb-12 { /* Target the section directly */
+    h2 {
+      color: #f5f5f5 !important; /* Título principal de la sección */
+    }
+    .border-2.border-blue-200.bg-blue-50 {
+      background-color: #1f1f1f !important; /* Fondo del contenedor principal */
+      border-color: #2a2a2a !important; /* Borde del contenedor principal */
+      h3.text-blue-800 {
+        color: #f5f5f5 !important; /* Títulos de subsecciones (Alta Prioridad, Normales) */
+      }
+      ul.text-blue-700 li span {
+        color: #f5f5f5 !important; /* Texto de los ítems de la lista */
+        strong {
+          color: #f5f5f5 !important; /* Texto en negrita dentro de los ítems */
+        }
+      }
+      .mt-6.p-4.bg-white.rounded-lg.border.border-blue-200 {
+        background-color: #2a2a2a !important; /* Fondo del contenedor "Flujo del Proceso" */
+        border-color: #2a2a2a !important; /* Borde del contenedor "Flujo del Proceso" */
+        h4.text-blue-800 {
+          color: #f5f5f5 !important; /* Título "Flujo del Proceso" */
+        }
+        div.text-blue-700 {
+          color: #f5f5f5 !important; /* Texto general del flujo */
+          span {
+            color: #f5f5f5 !important; /* Texto de los pasos del flujo */
+          }
+        }
+        span.px-2.py-1.rounded {
+          color: #f5f5f5 !important; /* Asegurar que el texto en los pasos del flujo sea blanco */
+        }
+        span.bg-blue-100 {
+          background-color: #1e88e5 !important; /* Botones con color de acento */
+          color: #f5f5f5 !important;
+        }
+        span.bg-yellow-100 {
+          background-color: #ffc107 !important; /* Yellow for caution */
+          color: #f5f5f5 !important; /* Ensure text is light in dark mode */
+        }
+        span.bg-red-100 {
+          background-color: #dc3545 !important; /* Red for dangerous */
+          color: #f5f5f5 !important;
+        }
+        span.bg-purple-100 {
+          background-color: #6f42c1 !important; /* Purple */
+          color: #f5f5f5 !important;
+        }
+        span.bg-green-100 {
+          background-color: #28a745 !important; /* Green for safe */
+          color: #f5f5f5 !important;
+        }
+      }
+    }
+  }
+
+  /* Additional dark mode styles for "Cómo Funciona el Sistema de Notificaciones" */
+  section.mb-6.sm\:mb-12 { /* Target the section directly */
+    color: #f5f5f5 !important; /* Ensure all text within this section is white */
+
+    ul.space-y-2.text-sm.text-blue-700 li {
+      color: #f5f5f5 !important; /* Ensure list item text is white */
+    }
+    .mt-6.p-4.bg-white.rounded-lg.border.border-blue-200 {
+      .text-blue-700 {
+        color: #f5f5f5 !important; /* Ensure text within "Flujo del Proceso" is white */
+      }
+      span {
+        color: #f5f5f5 !important; /* Ensure all spans within "Flujo del Proceso" are white */
+      }
+    }
+  }
+
+  /* Reportes Recientes de Compañeros */
+  .companero-card {
+    &.bg-red-50, &.bg-yellow-100, &.bg-blue-50, &.bg-white {
+      background-color: #1f1f1f !important; /* Darker background for report cards */
+      border-color: #2a2a2a !important; /* Darker border */
+    }
+    .text-gray-500, .text-gray-600, .text-gray-700 {
+      color: #f5f5f5 !important; /* White text for report card details */
+    }
+    .bg-primary\/10 {
+      background-color: rgba(#1e88e5, 0.1) !important; /* Keep accent background */
+      border-color: #1e88e5 !important; /* Keep accent border */
+    }
+    .text-primary\/70 {
+      color: #f5f5f5 !important; /* White text for "Tipo de Incidente" label */
+    }
+    .text-primary {
+      color: #f5f5f5 !important; /* White text for incident type */
+    }
+  }
+  .user-report-tracker {
+    .border-2.border-blue-200.rounded-2xl.p-4.mb-3.last\:mb-0 {
+      background-color: #1f1f1f !important; /* Darker background for individual report items */
+      border-color: #2a2a2a !important; /* Darker border */
+    }
+    .bg-white.border.border-gray-300.rounded-full.px-3.py-1.shadow-sm {
+      background-color: #2a2a2a !important; /* Darker background for the "Tipo de Incidente" badge */
+      border-color: #555555 !important; /* Darker border */
+      color: #f5f5f5 !important; /* White text */
+    }
+    .text-gray-600, .text-gray-500, .text-gray-700 {
+      color: #f5f5f5 !important; /* White text for report details */
+    }
+    .bg-gray-200 {
+      background-color: #2a2a2a !important; /* Darker background for progress bar track */
+    }
+  }
+
+
+  footer {
+    background-color: #1f1f1f; /* Tarjetas o contenedores */
+    color: #f5f5f5; /* Texto principal */
+    .text-gray-300 {
+      border-color: #2a2a2a; /* Inputs */
+    }
+  }
+
+  .modal-container {
+    background: #1f1f1f; /* Tarjetas o contenedores */
+    border-color: #2a2a2a; /* Inputs */
+  }
+  .modal-close {
+    color: #f5f5f5; /* Texto principal */
+    &:hover {
+      background: #2a2a2a; /* Inputs */
+    }
+  }
+
+  .mini-modal {
+    background: #1f1f1f; /* Tarjetas o contenedores */
+    border-color: #2a2a2a; /* Inputs */
+  }
+  .mm-title {
+    color: #f5f5f5; /* Texto principal */
+  }
+  .mm-text {
+    color: #b0b0b0; /* Texto secundario */
+  }
+  .mm-btn {
+    background: #1e88e5; /* Botones con color de acento */
+    &:hover {
+      filter: brightness(.95);
+    }
+  }
+
+  /* Force darker backgrounds and readable text for any utility classes/cards */
+  .kpi-card,
+  .report-main-button > div,
+  .border-2,
+  .border,
+  .bg-white,
+  .bg-gray-50,
+  .bg-gray-100,
+  .bg-blue-50,
+  .bg-green-50,
+  .bg-purple-50,
+  .bg-red-50,
+  .bg-yellow-50,
+  .bg-gray-200,
+  .border-blue-200,
+  .border-green-200,
+  .border-red-200,
+  .border-yellow-200,
+  .rounded-2xl {
+    background-color: #0b0b0b !important; /* very dark card background */
+    border-color: rgba(255,255,255,0.04) !important; /* subtle light border on dark */
+    color: #e6eef8 !important; /* readable text */
+  }
+
+  /* Keep colored accents (icons / small tints) but keep card surface dark */
+  .kpi-card.bg-blue-50 { background-color: rgba(59,130,246,0.06) !important; border-color: rgba(59,130,246,0.18) !important; color: #e6eef8 !important; }
+  .kpi-card.bg-green-50 { background-color: rgba(34,197,94,0.06) !important; border-color: rgba(34,197,94,0.18) !important; color: #e6eef8 !important; }
+  .kpi-card.bg-purple-50 { background-color: rgba(168,85,247,0.06) !important; border-color: rgba(168,85,247,0.18) !important; color: #e6eef8 !important; }
+
+  /* Make utility badges and small white elements readable */
+  .bg-primary\/10, .bg-blue-100, .bg-yellow-100, .bg-red-100, .bg-green-100, .bg-purple-100 {
+    background-color: rgba(255,255,255,0.02) !important;
+    color: #e6eef8 !important;
+    border-color: rgba(255,255,255,0.04) !important;
+  }
+
+  /* Text tone overrides for gray text classes inside dark mode */
+  .text-gray-500, .text-gray-600, .text-gray-700, .text-gray-800 {
+    color: #c3c9d3 !important;
+  }
+
+  /* Icons inside cards should be lighter for contrast */
+  .kpi-card svg, .companero-card svg, .alert-banner svg {
+    color: rgba(255,255,255,0.85) !important;
+  }
+}
+
+/* Variables (KPI) */
+:host { --kpi-border-width: 1px; }
+
+/* KPI cards (grosor por variable) */
+.kpi-card { border-style: solid; border-width: var(--kpi-border-width, 2px) !important; }
+.kpi-card--thin { --kpi-border-width: 1px; }
+.kpi-card--normal { --kpi-border-width: 2px; }
+.kpi-card--thick { --kpi-border-width: 3px; }
+
+/* Banner superior */
+.alert-banner { display: flex; align-items: center; gap: .5rem; padding: .75rem 1rem; border: 1px solid #fecaca; background: #EFF6FF; border-radius: 10px; }
+.alert-banner .alert-icon { width: 28px; height: 28px; display: grid; place-items: center; color: #e11d48; }
+.alert-banner .alert-icon svg { width: 18px; height: 18px; }
+.alert-banner .alert-text { margin: 0; color: #374151; font-size: .95rem; }
+
+/* Colores primario */
+.text-primary { color: #FF395C !important; }
+.bg-primary { background-color: #FF395C !important; }
+.border-primary { border-color: #FF395C !important; }
+.hover\:bg-primary\/90:hover { background-color: rgba(255,57,92,.9); }
+.hover\:bg-primary\/5:hover { background-color: rgba(255,57,92,.05); }
+.bg-primary\/10 { background-color: rgba(255,57,92,.1); }
+.text-primary\/70 { color: rgba(255,57,92,.7); }
+
+/* Azules */
+.bg-blue-50 { background-color: #EFF6FF; }
+.border-blue-200 { border-color: #BFDBFE; }
+.border-blue-300 { border-color: #93C5FD; }
+.border-blue-400 { border-color: #60A5FA; }
+.text-blue-600 { color: #2563EB; }
+.bg-blue-100 { background-color: #DBEAFE; }
+.bg-blue-500 { background-color: #3B82F6; }
+.text-blue-700 { color: #1D4ED8; }
+.text-blue-800 { color: #1E40AF; }
+
+/* Verdes */
+.bg-green-50 { background-color: #F0FDF4; }
+.border-green-200 { border-color: #BBF7D0; }
+.border-green-300 { border-color: #86EFAC; }
+.border-green-400 { border-color: #4ADE80; }
+.text-green-600 { color: #16A34A; }
+.bg-green-100 { background-color: #D1FAE5; }
+.bg-green-500 { background-color: #22C55E; }
+.bg-green-600 { background-color: #16A34A; }
+
+/* Púrpuras */
+.bg-purple-50 { background-color: #FAF5FF; }
+.border-purple-200 { border-color: #E9D5FF; }
+.border-purple-300 { border-color: #D8B4FE; }
+.border-purple-400 { border-color: #C084FC; }
+.text-purple-600 { color: #9333EA; }
+.bg-purple-100 { background-color: #F3E8FF; }
+.bg-purple-500 { background-color: #A855F7; }
+
+/* Neutros y otros */
+.bg-red-50 { background-color: #FFF1F2; }
+.bg-yellow-50 { background-color: #FFFBEB; }
+.bg-white { background-color: #fff; }
+.bg-gray-50 { background-color: #F9FAFB; }
+.bg-gray-100 { background-color: #f3f4f6; }
+.bg-gray-200 { background-color: #e5e7eb; }
+.bg-gray-300 { border-color: #D1D5DB; }
+.border-gray-300 { border-color: #D1D5DB; }
+.text-gray-500 { color: #6b7280; }
+.text-gray-600 { color: #4B5563; }
+.text-gray-700 { color: #374151; }
+.text-gray-800 { color: #1f2937; }
+.bg-gray-600 { background-color: #4b5563; }
+.bg-gray-700 { background-color: #374151; }
+.bg-gray-500 { background-color: #6b7280; }
+.bg-gray-400 { background-color: #9ca3af; }
+.text-white { color: #ffffff; }
+.bg-red-500 { background-color: #EF4444; }
+.bg-red-600 { background-color: #DC2626; }
+.hover\:bg-red-700:hover { background-color: #B91C1C; }
+.bg-yellow-100 { background-color: #fef9c3; }
+.bg-yellow-500 { background-color: #EAB308; }
+.bg-yellow-600 { background-color: #d97706; }
+.bg-orange-500 { background-color: #f97316; }
+.bg-indigo-500 { background-color: #6366f1; }
+
+/* Layout y spacing */
+.min-h-screen {
+  min-height: 100vh;
+  position: relative; /* Added for absolute positioning of dark mode toggle */
+}
+.max-w-6xl { max-width: 72rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.px-2 { padding-left: .5rem; padding-right: .5rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+.pt-16 { padding-top: 4rem; }
+.pt-24 { padding-top: 6rem; }
+.pt-32 { padding-top: 8rem; }
+.pt-48 { padding-top: 12rem; }
+.pt-64 { padding-top: 16rem; }
+.pt-80 { padding-top: 20rem; }
+.mb-2 { margin-bottom: .5rem; }
+.mb-3 { margin-bottom: .75rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-8 { margin-bottom: 2rem; }
+.mb-12 { margin-bottom: 3rem; }
+.mt-1 { margin-top: .25rem; }
+.mt-2 { margin-top: .5rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mt-12 { margin-top: 3rem; }
+.pb-2 { padding-bottom: .5rem; }
+.pb-3 { padding-bottom: .75rem; }
+.pb-4 { padding-bottom: 1rem; }
+.p-0 { padding: 0; }
+.p-3 { padding: .75rem; }
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }
+.pt-0 { padding-top: 0; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.py-1 { padding-top: .25rem; padding-bottom: .25rem; }
+.py-2 { padding-top: .5rem; padding-bottom: .5rem; }
+.space-y-2 > *:not([hidden]) ~ *:not([hidden]) { margin-top: .5rem; }
+.space-y-3 > *:not([hidden]) ~ *:not([hidden]) { margin-top: .75rem; }
+.space-y-4 > *:not([hidden]) ~ *:not([hidden]) { margin-top: 1rem; }
+.gap-1 { gap: .25rem; }
+.gap-2 { gap: .5rem; }
+.gap-3 { gap: .75rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+
+/* Flex & Grid */
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.flex-col { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+.grid { display: grid; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+
+/* Tipografía */
+.text-xs { font-size: .75rem; line-height: 1rem; }
+.text-sm { font-size: .875rem; line-height: 1.25rem; }
+.text-base { font-size: 1rem; line-height: 1.5rem; }
+.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+.font-medium { font-weight: 500; }
+.font-bold { font-weight: 700; }
+.font-black { font-weight: 900; }
+.uppercase { text-transform: uppercase; }
+.tracking-wide { letter-spacing: .025em; }
+.text-center { text-align: center; }
+.line-clamp-2 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; }
+
+/* Bordes & Sombras */
+.border-2 { border-width: 2px; }
+.border { border-width: 1px; }
+.border-l-4 { border-left-width: 4px; }
+.border-4 { border-width: 4px; }
+.border-white { border-color: #fff; }
+.border-dashed { border-style: dashed; }
+.border-solid { border-style: solid; }
+.rounded-md { border-radius: .375rem; }
+.rounded-lg { border-radius: .5rem; }
+.rounded-2xl { border-radius: 1rem; }
+.rounded-3xl { border-radius: 1.5rem; }
+.rounded-full { border-radius: 9999px; }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgba(0,0,0,.05); }
+.shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05); }
+.shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0,0,0,.25); }
+.hover\:shadow-lg:hover { box-shadow: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05); }
+.transition-shadow { transition-property: box-shadow; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.transition-all { transition-property: all; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.cursor-pointer { cursor: pointer; }
+.focus\:ring-4:focus { outline: 2px solid transparent; outline-offset: 2px; box-shadow: 0 0 0 4px rgba(255,57,92,.5); }
+
+/* Ancho & Alto */
+.w-full { width: 100%; }
+.h-2 { height: .5rem; }
+.h-2\.5 { height: .625rem; }
+.h-4 { height: 1rem; }
+.h-5 { height: 1.25rem; }
+.h-6 { height: 1.5rem; }
+.h-8 { height: 2rem; }
+.h-10 { height: 2.5rem; }
+.h-12 { height: 3rem; }
+.h-16 { height: 4rem; }
+.h-20 { height: 5rem; }
+.w-20 { width: 5rem; }
+.max-w-md { max-width: 28rem; }
+
+/* Componentes */
+.user-dashboard-welcome .border-primary { border-left-width: 4px; }
+
+/* Barra de progreso */
+.w-full.bg-gray-200.rounded-full.h-2\.5 { width: 100%; background-color: #e5e7eb; border-radius: 9999px; height: .625rem; }
+.bg-primary.h-2\.5.rounded-full { background-color: #FF395C; height: .625rem; border-radius: 9999px; }
+
+/* Botón SOS */
+.fixed { position: fixed; }
+.bottom-4 { bottom: 1rem; }
+.right-4 { right: 1rem; }
+.bottom-6 { bottom: 1.5rem; }
+.right-6 { right: 1.5rem; }
+.z-50 { z-index: 50; }
+.absolute { position: absolute; }
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+.opacity-30 { opacity: .3; }
+.pointer-events-none { pointer-events: none; }
+
+/* Animaciones */
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .5; } }
+.animate-pulse { animation: pulse 2s cubic-bezier(.4,0,.6,1) infinite; }
+@keyframes ping { 75%,100% { transform: scale(2); opacity: 0; } }
+.animate-ping { animation: ping 1s cubic-bezier(0,0,.2,1) infinite; }
+
+/* Breakpoints */
+@media (min-width: 640px) {
+  .sm\:px-4 { padding-left: 1rem; padding-right: 1rem; }
+  .sm\:py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+  .sm\:mb-8 { margin-bottom: 2rem; }
+  .sm\:mb-12 { margin-bottom: 3rem; }
+  .sm\:mb-4 { margin-bottom: 1rem; }
+  .sm\:gap-3 { gap: .75rem; }
+  .sm\:gap-4 { gap: 1rem; }
+  .sm\:text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+  .sm\:text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+  .sm\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
+  .sm\:h-6 { height: 1.5rem; }
+  .sm\:h-8 { height: 2rem; }
+  .sm\:h-10 { height: 2.5rem; }
+  .sm\:h-12 { height: 3rem; }
+  .sm\:h-16 { height: 4rem; }
+  .sm\:h-20 { height: 5rem; }
+  .sm\:w-6 { width: 1.5rem; }
+  .sm\:w-8 { width: 2rem; }
+  .sm\:w-10 { width: 2.5rem; }
+  .sm\:mr-2 { margin-right: .5rem; }
+  .sm\:mr-3 { margin-right: .75rem; }
+  .sm\:px-3 { padding-left: .75rem; padding-right: .75rem; }
+  .sm\:col-span-2 { grid-column: span 2 / span 2; }
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sm\:p-4 { padding: 1rem; }
+  .sm\:p-6 { padding: 1.5rem; }
+  .sm\:pb-3 { padding-bottom: .75rem; }
+  .sm\:hidden { display: none; }
+  .sm\:inline { display: inline; }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lg\:col-span-1 { grid-column: span 1 / span 1; }
+  .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Utilidades finales */
+.hidden { display: none; }
+.main-content { margin-top: 70px; }
+
+/* Modal base */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  z-index: 1100; /* por encima del navbar */
+  cursor: default;
+}
+.modal-container {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow: auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,.25);
+  border: 1px solid #E5E7EB; /* gris-200 */
+  cursor: default;
+}
+.modal-close {
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  background: transparent;
+  border: none;
+  color: #4B5563;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: .25rem .5rem;
+  border-radius: .375rem;
+  cursor: pointer;
+}
+.modal-close:hover { background: #F3F4F6; }
+
+/* Toasts (mini-modales) */
+.toast-wrap {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4000; /* por encima de modales/headers */
+  width: calc(100% - 2rem);
+  max-width: 520px;
+  padding: 0 .25rem;
+  pointer-events: none;
+}
+.toast {
+  border-radius: 12px;
+  padding: .65rem .85rem;
+  font-size: .95rem;
+  box-shadow: 0 12px 30px rgba(0,0,0,.15);
+  border: 1px solid #E5E7EB;
+  background: #fff;
+  pointer-events: all;
+}
+.toast.success { border-color: #bbf7d0; background: #f0fdf4; color: #065f46; }
+.toast.warn { border-color: #fde68a; background: #fffbeb; color: #92400e; }
+
+/* Mini-modal centrado */
+.mini-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  display: grid;
+  place-items: center;
+  z-index: 3500;
+}
+.mini-modal {
+  background: #fff;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 420px;
+  padding: 1rem 1rem .75rem;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,.25);
+}
+.mm-title { margin: 0 0 .35rem; font-size: 1.05rem; font-weight: 700; color: #111827; }
+.mm-text { margin: 0 0 .75rem; font-size: .95rem; color: #374151; }
+.mm-actions { display: flex; justify-content: flex-end; }
+.mm-btn { background: #FF395C; color: #fff; border: none; border-radius: 10px; padding: .45rem .9rem; font-weight: 600; cursor: pointer; }
+.mm-btn:hover { filter: brightness(.95); }
+
+/* ---- Reportes de Compañeros: franja izquierda del card (fina) ---- */
+.companero-card { position: relative; overflow: hidden; z-index: 0; }
+.companero-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px; /* franja más delgada */
+  background: transparent;
+  border-radius: inherit; /* que siga el redondeado del card */
+  z-index: 1;
+  pointer-events: none;
+}
+.companero-card.prio-alta::before { background: #ef4444; }
+.companero-card.prio-media::before { background: #f59e0b; }
+.companero-card.prio-baja::before { background: #3b82f6; }

@@ -1,0 +1,173 @@
+<div class="page-container">
+  <div class="content-wrapper">
+
+    <!-- HEADER (Encabezado Principal) -->
+    <div class="main-header">
+      <!-- MapPin Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="header-icon"><path d="M12 12.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M12 22.5s-8-7-8-12a8 8 0 1 1 16 0c0 5-8 12-8 12Z"/></svg>
+      <div>
+        <h1 class="header-title">GESTIÓN DE ZONAS UNIVERSITARIAS</h1>
+        <p class="header-subtitle">
+          Monitoreo y administración de zonas de la sede
+        </p>
+      </div>
+    </div>
+
+    <!-- ALERTA DE SOLO LECTURA (Para Estudiantes) -->
+    <div class="read-only-alert">
+      <!-- Eye Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="alert-icon"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+      <p class="alert-description">
+        <strong>Modo Solo Lectura:</strong> Estás viendo las zonas en modo de consulta.
+        Solo los administradores pueden editar la información de las zonas.
+      </p>
+    </div>
+
+    <!-- SEDE DEL ALUMNO (solo lectura) -->
+    <div class="sede-selector-card">
+      <div class="sede-selector-content">
+        <!-- Building Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sede-selector-icon"><path d="M18 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="flex-1">
+          <label class="sede-label">Sede del {{ contextLabel }}:</label>
+          <div class="sede-select">
+            {{ selectedSedeNombre || '—' }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESTADÍSTICAS RÁPIDAS (4 Cards) -->
+    <div class="quick-stats-grid">
+      <!-- Card 1 - Zonas Seguras -->
+      <div class="stat-card stat-safe">
+        <div class="stat-icon-wrapper">
+          <!-- Shield Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+          <div>
+            <p class="stat-value">{{ stats.seguras }}</p>
+            <p class="stat-label">Zonas Seguras</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 - En Precaución -->
+      <div class="stat-card stat-caution">
+        <div class="stat-icon-wrapper">
+          <!-- AlertTriangle Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div>
+            <p class="stat-value">{{ stats.precaucion }}</p>
+            <p class="stat-label">En Precaución</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 - Zonas Peligrosas -->
+      <div class="stat-card stat-dangerous">
+        <div class="stat-icon-wrapper">
+          <!-- AlertTriangle Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div>
+            <p class="stat-value">{{ stats.peligrosas }}</p>
+            <p class="stat-label">Zonas Peligrosas</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 - Estudiantes Activos -->
+      <div class="stat-card stat-students">
+        <div class="stat-icon-wrapper">
+          <!-- Users Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <div>
+            <p class="stat-value">{{ stats.estudiantes }}</p>
+            <p class="stat-label">Estudiantes Activos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- TARJETAS DE ZONAS (Grid de Zonas) -->
+    <div class="zone-cards-grid">
+      <div class="zone-card" *ngFor="let z of zonas">
+        <div class="zone-card-header">
+          <h3 class="zone-title">
+            {{ z.nombre }}
+            <span class="zone-status-badge"
+                  [ngClass]="{
+                    'zone-status-safe': categorizeZone(z) === 'segura',
+                    'zone-status-caution': categorizeZone(z) === 'precaucion',
+                    'zone-status-dangerous': categorizeZone(z) === 'peligrosa'
+                  }">
+              {{ categorizeZone(z) === 'segura' ? 'ZONA SEGURA' : (categorizeZone(z) === 'precaucion' ? 'EN PRECAUCIÓN' : (categorizeZone(z) === 'peligrosa' ? 'PELIGRO' : 'SIN ESTADO')) }}
+            </span>
+          </h3>
+          <div class="zone-details">
+            <div class="detail-item">
+              <!-- AlertTriangle Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="detail-icon"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>{{ z.reportCount || 0 }} incidentes resueltos</span>
+            </div>
+            <div class="detail-item">
+              <!-- Users Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="detail-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <span>0 estudiantes</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="trend-info trend-stable">
+          <!-- Trending Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="trend-icon"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          <span class="trend-status">estable</span>
+          <p class="trend-timestamp">—</p>
+        </div>
+
+        <!-- Nivel de Seguridad (placeholder) -->
+        <div class="security-level-section">
+          <div class="security-level-labels">
+            <span class="text-sm">Nivel de Seguridad</span>
+            <span class="text-sm">—</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" style="width: 100%"></div>
+          </div>
+        </div>
+
+        <!-- Imagen de la Zona -->
+        <div class="zone-image-wrapper">
+          <img [src]="z.fotoUrl || 'https://via.placeholder.com/300x150/cccccc/000000?text=Vista+de+Zona'" alt="Vista de la Zona" class="zone-image">
+          <div class="image-overlay"></div>
+          <div class="image-location">
+            <p class="flex items-center gap-1">
+              <!-- MapPin Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="location-icon"><path d="M12 12.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M12 22.5s-8-7-8-12a8 8 0 1 1 16 0c0 5-8 12-8 12Z"/></svg>
+              {{ selectedSedeNombre || 'Sede' }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="security-description-section">
+          <p class="security-description-label">
+            <!-- Shield Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="detail-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+            Información de Seguridad:
+          </p>
+          <p class="security-description-text">
+            {{ z.descripcion || '—' }}
+          </p>
+        </div>
+
+        <!-- BOTÓN DE ACCIÓN (Reportar) -->
+        <div class="report-button-wrapper" *ngIf="showReportButton">
+          <button class="report-button" type="button" (click)="openReportIncident()" aria-label="Reportar incidente ahora">
+            📢 Reportar Incidente
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
