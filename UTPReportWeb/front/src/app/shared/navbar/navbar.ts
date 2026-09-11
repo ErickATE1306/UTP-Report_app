@@ -9,12 +9,11 @@ import { PageConfigService, PageKey } from '../../services/page-config.service';
 import { TourService } from '../tour/tour.service';
 import { DarkModeService } from '../../services/dark-mode.service';
 import { TourComponent } from '../tour/tour.component';
-import { Notificaciones } from '../../Usuario/notificaciones/notificaciones';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, NgIf, NgClass, RouterModule, TourComponent, Notificaciones],
+  imports: [CommonModule, NgIf, NgClass, RouterModule, TourComponent],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.scss']
 })

@@ -86,9 +86,10 @@
           </a>
           <!-- Panel flotante de notificaciones -->
           <div class="notifications-dropdown" *ngIf="showNotifs()">
-            <app-notificaciones [items]="notifications()"></app-notificaciones>
+            <div class="p-3 text-center text-muted small">Sin notificaciones</div>
           </div>
         </li>
+
 
         <!-- Nombre usuario con prefijo: junto a campanita -->
         <li class="nav-item">
