@@ -9,24 +9,39 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.utpreportapp.ui.screens.auth.LoginScreen
 import com.example.utpreportapp.ui.screens.seguridad.SecurityModuleScreen
+import com.example.utpreportapp.ui.screens.usuario.PantallaInicioUsuario
+
+private enum class RolDemostracion {
+    SEGURIDAD,
+    USUARIO,
+}
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
-        var isSecuritySessionStarted by rememberSaveable { mutableStateOf(false) }
+        var sessionRoleName by rememberSaveable { mutableStateOf<String?>(null) }
         var loginError by rememberSaveable { mutableStateOf<String?>(null) }
 
-        if (isSecuritySessionStarted) {
-            SecurityModuleScreen()
-        } else {
-            LoginScreen(
+        when (sessionRoleName?.let(RolDemostracion::valueOf)) {
+            RolDemostracion.SEGURIDAD -> SecurityModuleScreen()
+            RolDemostracion.USUARIO -> PantallaInicioUsuario()
+            null -> LoginScreen(
                 authenticationError = loginError,
-                demoCredentialsHint = "Cuenta demo: seguridad.demo / 123456",
                 onLogin = { username, password ->
-                    if (username.equals("seguridad.demo", ignoreCase = true) && password == "123456") {
+                    val role = when {
+                        username.equals("seguridad.demo", ignoreCase = true) && password == "123456" -> {
+                            RolDemostracion.SEGURIDAD
+                        }
+                        username.equals("usuario.demo", ignoreCase = true) && password == "123456" -> {
+                            RolDemostracion.USUARIO
+                        }
+                        else -> null
+                    }
+
+                    if (role != null) {
                         loginError = null
-                        isSecuritySessionStarted = true
+                        sessionRoleName = role.name
                     } else {
                         loginError = "Usuario o contraseña incorrectos"
                     }
