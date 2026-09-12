@@ -27,12 +27,8 @@ La comunidad universitaria necesita un medio rápido, seguro y accesible para co
 El tablero contiene **22 historias o tareas**: **6 terminadas** y **16 pendientes**.
 
 ### Proceso y atención de reporte
+<img width="1288" height="1149" alt="image" src="https://github.com/user-attachments/assets/c41b694d-542e-423d-ac5f-cf38b8ba9f49" />
 
-![Proceso y atención de reporte](docs/images/proceso-atencion-reporte.png)
-
-### Proceso de notificación
-
-![Proceso de notificación](docs/images/proceso-notificacion.png)
 
 ## Productos terminados
 
