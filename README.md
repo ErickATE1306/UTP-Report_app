@@ -5,13 +5,15 @@
 **Equipo:** Arnold Antezana Torres · Álvaro Alexis Capcha Hinostroza · Andrea Gallo Vargas · Richard Gómez Mandujano  
 **Primer entregable:** viernes
 
-## Objetivo
-
-Elaborar un mapa que permita organizar los productos del primer entregable, tomando como referencia los formatos trabajados en las guías de laboratorio.
 
 ## Problema
 
 La comunidad universitaria necesita un medio rápido, seguro y accesible para comunicar incidentes. **UTP Reporta** busca centralizar el registro, la ubicación, las evidencias y el seguimiento de cada reporte, facilitando además la atención por parte del personal de seguridad y de los administradores.
+
+
+## Procesos Identificados
+<img width="1139" height="1600" alt="image" src="https://github.com/user-attachments/assets/97d3fde6-14cb-4b61-9e06-154fda179630" />
+
 
 ## Sprint del primer entregable
 
@@ -121,3 +123,16 @@ UTP-Report_app/
 ---
 
 **Avance del tablero:** 6 de 22 ítems terminados (27 %).
+
+
+%%{init: {
+  "flowchart": {
+    "defaultRenderer": "elk",
+    "curve": "linear",
+    "nodeSpacing": 25,
+    "rankSpacing": 35
+  }
+}}%%
+
+flowchart LR
+
