@@ -5,42 +5,34 @@
 **Equipo:** Arnold Antezana Torres · Álvaro Alexis Capcha Hinostroza · Andrea Gallo Vargas · Richard Gómez Mandujano  
 **Primer entregable:** viernes
 
+## Roles Scrum
+
+| Integrante | Rol Scrum | Responsabilidad principal |
+|---|---|---|
+| Álvaro Alexis Capcha Hinostroza | **Scrum Master** | Facilitar el trabajo del equipo, coordinar las ceremonias Scrum y ayudar a eliminar impedimentos. |
+| Andrea Gallo Vargas | **Product Owner** | Definir y priorizar el Product Backlog, representar las necesidades del usuario y validar el valor del producto. |
+| Richard Gómez Mandujano | **QA** | Verificar la calidad del producto, diseñar y ejecutar pruebas, y registrar incidencias. |
+| Arnold Antezana Torres | **Team Developer** | Diseñar, implementar e integrar las funcionalidades comprometidas durante el sprint. |
+
+## Objetivo
+
+Elaborar un mapa que permita organizar los productos del primer entregable, tomando como referencia los formatos trabajados en las guías de laboratorio.
 
 ## Problema
 
 La comunidad universitaria necesita un medio rápido, seguro y accesible para comunicar incidentes. **UTP Reporta** busca centralizar el registro, la ubicación, las evidencias y el seguimiento de cada reporte, facilitando además la atención por parte del personal de seguridad y de los administradores.
 
-
-## Procesos Identificados
-<img width="1139" height="1600" alt="image" src="https://github.com/user-attachments/assets/97d3fde6-14cb-4b61-9e06-154fda179630" />
-
-
 ## Sprint del primer entregable
 
 El tablero contiene **22 historias o tareas**: **6 terminadas** y **16 pendientes**.
 
-```mermaid
-flowchart TD
-    A[Primer entregable: UTP Reporta]
+### Proceso y atención de reporte
 
-    A --> B[Productos terminados: 6]
-    B --> B1[Acceso seguro<br/>#4 y #41]
-    B --> B2[Arquitectura y diseño<br/>#20 y #21]
-    B --> B3[Administración y seguridad<br/>#35 y #37]
+![Proceso y atención de reporte](docs/images/proceso-atencion-reporte.png)
 
-    A --> C[Backlog pendiente: 16]
-    C --> C1[Reporte móvil<br/>#3, #6, #8, #9 y #10]
-    C --> C2[Mapa y alertas<br/>#5 y #7]
-    C --> C3[Seguimiento<br/>#11, #12 y #13]
-    C --> C4[Configuración y continuidad<br/>#14, #15, #18 y #19]
-    C --> C5[Gestión administrativa<br/>#16 y #17]
+### Proceso de notificación
 
-    A --> D[Evidencias]
-    D --> D1[Guías y sesiones]
-    D --> D2[Frontend]
-    D --> D3[Backend]
-    D --> D4[Aplicación móvil]
-```
+![Proceso de notificación](docs/images/proceso-notificacion.png)
 
 ## Productos terminados
 
@@ -123,16 +115,3 @@ UTP-Report_app/
 ---
 
 **Avance del tablero:** 6 de 22 ítems terminados (27 %).
-
-
-%%{init: {
-  "flowchart": {
-    "defaultRenderer": "elk",
-    "curve": "linear",
-    "nodeSpacing": 25,
-    "rankSpacing": 35
-  }
-}}%%
-
-flowchart LR
-
