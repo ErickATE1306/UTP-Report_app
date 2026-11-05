@@ -16,6 +16,7 @@ public interface UsuarioService {
     List<UsuarioDTO> getUsuariosByEnabledStatus(boolean enabled);
     UsuarioDTO updateUsuarioEnabledStatus(Long id, boolean enabled);
     UsuarioDTO updateUsuario(Long id, UsuarioUpdateRequest request, String password);
+    void deleteUsuario(Long id);
     List<UsuarioDTO> getAllUsersExcludingSuperAdmin();
     Boolean isTelefonoUnique(String telefono, Long id); // New method for phone number uniqueness check
     UsuarioDTO getCurrentProfile(String principal);

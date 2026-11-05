@@ -53,6 +53,7 @@ public class ReporteGestionCommandServiceImpl implements ReporteGestionCommandSe
 
         ReporteGestion reporteGestionToSave;
         Optional<ReporteGestion> existingReporteGestion = reporteGestionRepository.findByReporte(reporte);
+        boolean yaEstabaResuelto = existingReporteGestion.map(g -> g.getEstado() == EstadoReporte.RESUELTO).orElse(false);
 
         if (existingReporteGestion.isPresent()) {
             reporteGestionToSave = existingReporteGestion.get();
@@ -87,7 +88,7 @@ public class ReporteGestionCommandServiceImpl implements ReporteGestionCommandSe
             notificationService.notifyReportStatusChange(reporteId, perUserMessage);
         }
 
-        if (estado == EstadoReporte.RESUELTO) {
+        if (estado == EstadoReporte.RESUELTO && !yaEstabaResuelto) {
             Zona zona = reporte.getZona();
             // estado previo para decidir notificación de cambio de estado
             EstadoZona anterior = zona.getEstado();

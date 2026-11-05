@@ -1,4 +1,5 @@
 package com.utp_reporta_backend.modules.zona.service.command.impl;
+import com.utp_reporta_backend.common.exception.BadRequestException;
 import com.utp_reporta_backend.common.exception.ResourceNotFoundException;
 
 import com.utp_reporta_backend.modules.sede.model.Sede;
@@ -21,17 +22,25 @@ public class ZonaCommandServiceImpl implements ZonaCommandService {
     private final ZonaRepository zonaRepository;
     private final SedeRepository sedeRepository;
     private final ZonaMapper mapper;
+    private static final int DESCRIPCION_MAX = 255;
     public ZonaResponse crearZona(ZonaRequest request) {
+        validarDescripcion(request);
         Zona zona = new Zona();
         zona.setNombre(request.getNombre()); zona.setDescripcion(request.getDescripcion()); zona.setSede(getSede(request.getSedeId()));
         setFoto(zona, request, false); return mapper.toResponse(zonaRepository.save(zona));
     }
     public ZonaResponse updateZona(Long id, ZonaRequest request) {
+        validarDescripcion(request);
         Zona zona = getZona(id); zona.setNombre(request.getNombre()); zona.setDescripcion(request.getDescripcion()); zona.setSede(getSede(request.getSedeId()));
         setFoto(zona, request, true); return mapper.toResponse(zonaRepository.save(zona));
     }
     public void deleteZona(Long id) { getZona(id); zonaRepository.deleteById(id); }
     public ZonaResponse setActivoZona(Long id, boolean activo) { Zona zona=getZona(id); zona.setActivo(activo); return mapper.toResponse(zonaRepository.save(zona)); }
+    private void validarDescripcion(ZonaRequest request) {
+        if (request.getDescripcion() != null && request.getDescripcion().length() > DESCRIPCION_MAX) {
+            throw new BadRequestException("La descripción de la zona no puede superar los " + DESCRIPCION_MAX + " caracteres.");
+        }
+    }
     private Zona getZona(Long id) { return zonaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Zona no encontrada con ID: " + id)); }
     private Sede getSede(Long id) { return sedeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Sede no encontrada con ID: " + id)); }
     private void setFoto(Zona zona, ZonaRequest request, boolean clearWhenNull) {

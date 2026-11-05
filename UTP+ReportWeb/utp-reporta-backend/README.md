@@ -43,6 +43,12 @@ It is recommended to create a database named `db_utp_reporta` in your MySQL serv
 
 Environment variables `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, `SPRING_JPA_DDL_AUTO`, `SHOW_SQL`, and `FORMAT_SQL` can be used to override these default values.
 
+**`JWT_SECRET` is required:** the application does not start without it. It is the Base64 key that signs the JWTs (at least 32 bytes). Generate one with `openssl rand -base64 32` and keep it out of the repository.
+
+**`SUPERADMIN_PASSWORD` is required the first time:** when the database has no users, the application creates the `superadmin` account with this password and does not start without it. It is ignored once users exist, so change the password of an existing account from the application.
+
+Swagger is off by default. Set `SWAGGER_ENABLED=true` to use it in development.
+
 ### Build and Run
 
 1.  **Clone the repository:**

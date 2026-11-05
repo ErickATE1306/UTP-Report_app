@@ -25,6 +25,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public List<UsuarioDTO> getUsuariosByEnabledStatus(boolean enabled){return queryService.getUsuariosByEnabledStatus(enabled);}
     public UsuarioDTO updateUsuarioEnabledStatus(Long id,boolean enabled){return commandService.updateUsuarioEnabledStatus(id,enabled);}
     public UsuarioDTO updateUsuario(Long id,UsuarioUpdateRequest request,String password){return commandService.updateUsuario(id,request,password);}
+    public void deleteUsuario(Long id){commandService.deleteUsuario(id);}
     public List<UsuarioDTO> getAllUsersExcludingSuperAdmin(){return queryService.getAllUsersExcludingSuperAdmin();}
     public Boolean isTelefonoUnique(String telefono,Long id){return queryService.isTelefonoUnique(telefono,id);}
     public UsuarioDTO getCurrentProfile(String principal){return queryService.getCurrentProfile(principal);}

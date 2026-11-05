@@ -5,6 +5,7 @@ import com.utp_reporta_backend.modules.reporte.dto.request.ReporteRequest;
 import com.utp_reporta_backend.modules.reporte.service.ReporteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReporteController {
     private final ReporteService reporteService;
+    private final ReporteAccessPolicy accessPolicy;
 
     @GetMapping
     public ResponseEntity<List<ReporteDTO>> getAllReportes() {
@@ -47,8 +49,10 @@ public class ReporteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReporteDTO> getReporteById(@PathVariable Long id) {
-        return ResponseEntity.ok(reporteService.getReporteById(id));
+    public ResponseEntity<ReporteDTO> getReporteById(@PathVariable Long id, Authentication auth) {
+        ReporteDTO reporte = reporteService.getReporteById(id);
+        accessPolicy.verificarLectura(auth, reporte == null ? null : reporte.getUsuarioId());
+        return ResponseEntity.ok(reporte);
     }
 
    @PostMapping
@@ -59,7 +63,9 @@ public class ReporteController {
             @RequestPart(value = "foto", required = false) MultipartFile foto,
             @RequestParam Boolean isAnonimo,
             @RequestParam(value = "contacto", required = false) String contacto,
-            @RequestParam("usuarioId") Long usuarioId) {
+            @RequestParam("usuarioId") Long usuarioId,
+            Authentication auth) {
+        accessPolicy.verificarAutoria(auth, usuarioId);
         ReporteDTO createdReporte = reporteService.createReporte(
                 new ReporteRequest(tipoIncidenteId, zonaId, descripcion, foto, isAnonimo, contacto, usuarioId));
         return new ResponseEntity<>(createdReporte, HttpStatus.CREATED);
@@ -87,7 +93,8 @@ public class ReporteController {
     }
 
     @GetMapping("/by-username/{username}")
-    public ResponseEntity<List<ReporteDTO>> getReportsByUsername(@PathVariable String username) {
+    public ResponseEntity<List<ReporteDTO>> getReportsByUsername(@PathVariable String username, Authentication auth) {
+        accessPolicy.verificarLecturaPorUsername(auth, username);
         return ResponseEntity.ok(reporteService.getReportsByUsername(username));
     }
 

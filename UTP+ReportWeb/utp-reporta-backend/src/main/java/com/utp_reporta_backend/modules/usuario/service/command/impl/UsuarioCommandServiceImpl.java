@@ -9,6 +9,9 @@ import com.utp_reporta_backend.modules.sede.repository.SedeRepository;
 import com.utp_reporta_backend.modules.usuario.repository.UsuarioRepository;
 import com.utp_reporta_backend.modules.zona.repository.ZonaRepository;
 
+import com.utp_reporta_backend.common.exception.BadRequestException;
+import com.utp_reporta_backend.common.exception.ResourceNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -29,6 +32,21 @@ public class UsuarioCommandServiceImpl implements UsuarioCommandService {
     private final SedeRepository sedeRepository;
     private final ZonaRepository zonaRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public void deleteUsuario(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + id));
+        if (usuario.getRoles().stream().anyMatch(rol -> rol.getNombre() == ERol.ROLE_SUPERADMIN)) {
+            throw new BadRequestException("No se puede eliminar una cuenta de superadministrador.");
+        }
+        try {
+            usuarioRepository.delete(usuario);
+            usuarioRepository.flush(); // El rechazo de la base debe ocurrir aquí para explicar el motivo.
+        } catch (DataIntegrityViolationException e) {
+            throw new BadRequestException("Esta cuenta tiene reportes asociados. Desactívala en lugar de eliminarla.");
+        }
+    }
 
     @Override
     public UsuarioDTO updateUsuarioEnabledStatus(Long id, boolean enabled) {
@@ -60,12 +78,18 @@ public class UsuarioCommandServiceImpl implements UsuarioCommandService {
 
     @Override
     public UsuarioDTO updateUsuario(Long id, UsuarioUpdateRequest request, String password) {
-        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
-        if (usuarioOptional.isEmpty()) {
-            return null; // Usuario no encontrado
-        }
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + id));
 
-        Usuario usuario = usuarioOptional.get();
+        // Se valida antes de modificar: la entidad está en la transacción y un cambio parcial se guardaría.
+        if (request.getCorreo() != null && !request.getCorreo().equals(usuario.getCorreo())
+                && usuarioRepository.existsByCorreoAndIdNot(request.getCorreo(), id)) {
+            throw new BadRequestException("El correo ya está registrado.");
+        }
+        if (request.getTelefono() != null && !request.getTelefono().equals(usuario.getTelefono())
+                && usuarioRepository.existsByTelefonoAndIdNot(request.getTelefono(), id)) {
+            return null; // El controlador responde 409
+        }
 
         // Actualizar campos básicos
         if (request.getNombreCompleto() != null) {
@@ -74,11 +98,7 @@ public class UsuarioCommandServiceImpl implements UsuarioCommandService {
         if (request.getCorreo() != null) {
             usuario.setCorreo(request.getCorreo());
         }
-        if (request.getTelefono() != null && !request.getTelefono().equals(usuario.getTelefono())) {
-            // Validate if the new phone number is unique for other users
-            if (usuarioRepository.existsByTelefonoAndIdNot(request.getTelefono(), id)) {
-                return null; // Indicate validation failure by returning null
-            }
+        if (request.getTelefono() != null) {
             usuario.setTelefono(request.getTelefono());
         }
         if (request.getTipoUsuario() != null) {
