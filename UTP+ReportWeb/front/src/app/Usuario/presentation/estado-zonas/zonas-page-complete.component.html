@@ -1,0 +1,73 @@
+<div class="u-pagina">
+  <div class="titulo">
+    <div>
+      <h1>Estado de zonas</h1>
+      @if (contextLabel()) { <p class="u-tenue">Vista de {{ contextLabel() }}</p> }
+    </div>
+    @if (showReportButton()) {
+      <a class="u-btn" routerLink="/usuario/nuevo-reporte">Reportar</a>
+    }
+  </div>
+
+  <label class="u-campo">Sede
+    <select class="u-input" name="sede" [ngModel]="sedeId()" (ngModelChange)="seleccionarSede($event)">
+      @for (sede of sedes(); track sede.id) { <option [ngValue]="sede.id">{{ sede.nombre }}</option> }
+    </select>
+  </label>
+
+  @if (cargando()) {
+    <p class="u-estado" role="status">Cargando zonas…</p>
+  } @else if (error()) {
+    <div class="u-card u-estado" role="alert">
+      <p>No pudimos cargar el estado de las zonas.</p>
+      <button type="button" class="u-btn u-btn--secundario" (click)="reintentar()">Reintentar</button>
+    </div>
+  } @else if (!zonas().length) {
+    <div class="u-card u-estado">
+      <i class="bi bi-geo-alt" aria-hidden="true"></i>
+      <p>No hay zonas registradas para esta sede.</p>
+    </div>
+  } @else {
+    <section class="u-card resumen">
+      <div class="campus" [class]="'campus--' + resumen().nivel">
+        <i class="bi" [class]="resumen().nivel === 'operativo' ? 'bi-shield-check' : 'bi-shield-exclamation'" aria-hidden="true"></i>
+        <div>
+          <h2>{{ resumen().titulo }}</h2>
+          <p class="u-tenue">{{ resumen().detalle }}</p>
+        </div>
+      </div>
+      <dl class="conteos">
+        <div class="u-tono-verde"><dt>Seguras</dt><dd>{{ resumen().seguras }}</dd></div>
+        <div class="u-tono-ambar"><dt>Precaución</dt><dd>{{ resumen().precaucion }}</dd></div>
+        <div class="u-tono-rojo"><dt>Peligrosas</dt><dd>{{ resumen().peligrosas }}</dd></div>
+      </dl>
+    </section>
+
+    <label class="u-buscador">
+      <i class="bi bi-search" aria-hidden="true"></i>
+      <input class="u-input" type="search" name="busqueda" placeholder="Buscar zona" aria-label="Buscar zona"
+        [ngModel]="busqueda()" (ngModelChange)="busqueda.set($event)">
+    </label>
+
+    <ul class="lista">
+      @for (zona of visibles(); track zona.id) {
+        <li class="u-card zona" [class]="'zona--' + tono(zona.estado)">
+          <span class="u-icono" [class]="'u-tono-' + tono(zona.estado)" aria-hidden="true"><i class="bi bi-geo-alt-fill"></i></span>
+          <div class="zona__cuerpo">
+            <strong>{{ zona.nombre }}</strong>
+            <span class="estado" [class]="'u-tono-' + tono(zona.estado)">{{ etiqueta(zona.estado) }}</span>
+            @if (zona.descripcion) { <p class="u-tenue">{{ zona.descripcion }}</p> }
+          </div>
+        </li>
+      } @empty {
+        <li class="u-card u-estado">Ninguna zona coincide con tu búsqueda.</li>
+      }
+    </ul>
+
+    <ul class="leyenda u-card" aria-label="Leyenda">
+      @for (estado of leyenda; track estado) {
+        <li><span class="punto" [class]="'punto--' + tono(estado)" aria-hidden="true"></span> {{ etiqueta(estado) }}</li>
+      }
+    </ul>
+  }
+</div>

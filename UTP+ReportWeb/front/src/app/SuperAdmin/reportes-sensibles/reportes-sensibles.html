@@ -135,7 +135,7 @@
 	<!-- filtros simples -->
 	<div class="filters">
 		<input type="text" placeholder="Buscar usuario, email, descripción..." [(ngModel)]="searchText" class="input-field" />
-		<select [(ngModel)]="selectedEstado" class="select-field">
+		<select aria-label="Filtrar por estado" [(ngModel)]="selectedEstado" class="select-field">
 			<option value="all">Todos</option>
 			<option value="PENDIENTE">Pendiente</option>
 			<option value="INVESTIGANDO">Investigando</option>
@@ -143,13 +143,13 @@
 			<option value="RESUELTO">Resuelto</option>
 			<option value="CANCELADO">Cancelado</option>
 		</select>
-		<select [(ngModel)]="selectedPrioridad" class="select-field">
+		<select aria-label="Filtrar por prioridad" [(ngModel)]="selectedPrioridad" class="select-field">
 			<option value="all">Todas</option>
 			<option value="ALTA">Alta</option>
 			<option value="MEDIA">Media</option>
 			<option value="BAJA">Baja</option>
 		</select>
-		<select [(ngModel)]="selectedTipo" class="select-field">
+		<select aria-label="Filtrar por tipo de incidente" [(ngModel)]="selectedTipo" class="select-field">
 			<option value="all">Todos</option>
 			<option *ngFor="let t of tipos" [value]="t.id">{{ t.nombre }}</option>
 		</select>
@@ -362,7 +362,7 @@
 								</div>
 							</ng-container>
 							<ng-template #noCommentSA>
-								<div style="color:#94a3b8; font-size:11px;">Sin comentarios.</div>
+								<div style="color:#5d6b84; font-size:11px;">Sin comentarios.</div>
 							</ng-template>
 						</div>
 					</div>

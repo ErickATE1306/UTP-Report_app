@@ -8,4 +8,5 @@ export interface UsuarioUpdateRequest {
   telefono?: string;
   tipoUsuario?: 'ALUMNO' | 'DOCENTE';
   zonasNombres?: Array<string>;
+  password?: string;
 }

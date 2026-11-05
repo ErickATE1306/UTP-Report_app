@@ -1,3 +1,6 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Zonas } from './zonas';
@@ -8,7 +11,8 @@ describe('Zonas', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Zonas]
+      imports: [Zonas],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
     })
     .compileComponents();
 

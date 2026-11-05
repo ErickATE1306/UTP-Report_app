@@ -1,0 +1,65 @@
+<section class="heroe">
+  <h1>{{ nombre() ? 'Hola, ' + nombre() : 'Hola' }}</h1>
+  <div class="alerta">
+    <i class="bi bi-shield-exclamation alerta__icono" aria-hidden="true"></i>
+    <div class="alerta__texto">
+      <h2>¿Ocurrió un incidente?</h2>
+      <p>Tu reporte ayuda a mantener nuestra comunidad segura.</p>
+      <a class="u-btn reportar" routerLink="/usuario/nuevo-reporte">
+        Reportar ahora <i class="bi bi-chevron-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="u-pagina">
+  <section class="contadores" aria-label="Resumen de reportes">
+    <div class="u-card contador">
+      <span class="u-icono" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></span>
+      <div><p class="u-tenue">Reportes activos</p><strong>{{ conteo().activos }}</strong></div>
+    </div>
+    <div class="u-card contador">
+      <span class="u-icono" aria-hidden="true"><i class="bi bi-check-circle"></i></span>
+      <div><p class="u-tenue">Resueltos</p><strong>{{ conteo().resueltos }}</strong></div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2>Estado de mis reportes</h2>
+    @if (cargando()) {
+      <p class="u-estado" role="status">Cargando tus reportes…</p>
+    } @else if (error()) {
+      <div class="u-card u-estado" role="alert">
+        <p>No pudimos cargar tus reportes.</p>
+        <button type="button" class="u-btn u-btn--secundario" (click)="cargarReportes()">Reintentar</button>
+      </div>
+    } @else {
+      @for (reporte of destacados(); track reporte.id) {
+        <app-reporte-card [reporte]="reporte" />
+      } @empty {
+        <div class="u-card u-estado">
+          <i class="bi bi-inbox" aria-hidden="true"></i>
+          <p>Aún no has enviado reportes.</p>
+        </div>
+      }
+    }
+  </section>
+
+  <section class="seccion quick-actions-section">
+    <h2>Accesos rápidos</h2>
+    <div class="accesos">
+      <a class="u-card acceso" routerLink="/usuario/estado-zonas">
+        <span class="u-icono" aria-hidden="true"><i class="bi bi-geo-alt"></i></span> Estado de zonas
+      </a>
+      <a class="u-card acceso" routerLink="/usuario/guia-page">
+        <span class="u-icono" aria-hidden="true"><i class="bi bi-book"></i></span> Guía de seguridad
+      </a>
+      <a class="u-card acceso" routerLink="/usuario/notificaciones">
+        <span class="u-icono" aria-hidden="true"><i class="bi bi-bell"></i></span> Notificaciones
+      </a>
+      <button type="button" class="u-card acceso" aria-label="Ver mis reportes anteriores" routerLink="/usuario/mis-reportes">
+        <span class="u-icono" aria-hidden="true"><i class="bi bi-clock-history"></i></span> Mis reportes
+      </button>
+    </div>
+  </section>
+</div>

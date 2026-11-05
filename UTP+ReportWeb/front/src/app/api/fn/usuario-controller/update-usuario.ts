@@ -12,7 +12,6 @@ import { UsuarioUpdateRequest } from '../../models/usuario-update-request';
 
 export interface UpdateUsuario$Params {
   id: number;
-  password?: string;
       body: UsuarioUpdateRequest
 }
 
@@ -20,7 +19,6 @@ export function updateUsuario(http: HttpClient, rootUrl: string, params: UpdateU
   const rb = new RequestBuilder(rootUrl, updateUsuario.PATH, 'put');
   if (params) {
     rb.path('id', params.id, {});
-    rb.query('password', params.password, {});
     rb.body(params.body, 'application/json');
   }
 

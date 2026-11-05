@@ -181,13 +181,13 @@
 .percent { width:48px; text-align:right; font-weight:600 }
 .image-area { margin-bottom:12px }
 .image-area img { width:100%; height:140px; object-fit:cover; border-radius:8px; display:block }
-.no-image { height:140px; display:flex; align-items:center; justify-content:center; flex-direction:row; gap:10px; border:1px dashed #e6e6e6; border-radius:8px; background:#fafafa; color:#777 }
+.no-image { height:140px; display:flex; align-items:center; justify-content:center; flex-direction:row; gap:10px; border:1px dashed #e6e6e6; border-radius:8px; background:#fafafa; color:#5f5f5f }
 .no-image i { font-size:1.4rem }
 .no-image-text { font-size:0.95rem }
 .info-box { border:1px solid #eee; padding:10px; border-radius:8px; background:#fafafa }
 .info-box .desc { color:#555 }
 .zone-actions { display:flex; align-items:center; gap:12px; justify-content:space-between }
-.btn-report { background:#ff6b81; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; flex:1 }
+.btn-report { background:#c9143b; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; flex:1 }
 .zone-actions { display:flex; align-items:center; gap:12px; justify-content:flex-end }
 .zone-actions .small-icons { margin-left:auto }
 
@@ -251,8 +251,8 @@
 .select-box svg { flex:0 0 20px }
 .select-box select { border:none; background:transparent; font-weight:600; outline:none }
 .sede-top-actions { display:flex; gap:8px; margin-left: auto; /* Push actions to the right on larger screens */ }
-.btn-add-zone { background:#ff6b81; color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer }
-.btn-add-zone:hover { background:#ff4763 }
+.btn-add-zone { background:#c9143b; color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer }
+.btn-add-zone:hover { background:#a8102f }
 
 @media (max-width: 768px) {
   .sede-topbar {

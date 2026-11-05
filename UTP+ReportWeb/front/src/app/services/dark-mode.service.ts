@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { PerfilService } from './perfil.service';
+import { ROLES } from '../constants/roles';
 
 @Injectable({ providedIn: 'root' })
 export class DarkModeService {
@@ -101,7 +102,7 @@ export class DarkModeService {
 
     // Refuerzo: si por alguna razón la clase dark-mode persiste estando en SUPERADMIN, quitarla.
     effect(() => {
-      const isSuper = (this.auth as any).hasRole && (this.auth as any).hasRole('SUPERADMIN');
+      const isSuper = (this.auth as any).hasRole && (this.auth as any).hasRole(ROLES.SUPERADMIN);
       if (isSuper) {
         try {
           document.documentElement.classList.remove('dark-mode');
@@ -144,11 +145,11 @@ export class DarkModeService {
 
   private computeRoleKey(): string {
     try {
-      if ((this.auth as any).hasRole && (this.auth as any).hasRole('SUPERADMIN')) return 'SUPERADMIN';
+      if ((this.auth as any).hasRole && (this.auth as any).hasRole(ROLES.SUPERADMIN)) return 'SUPERADMIN';
       if ((this.auth as any).isAdminAsUser && (this.auth as any).isAdminAsUser()) return 'ADMIN_AS_USER';
-      if ((this.auth as any).hasRole && (this.auth as any).hasRole('ADMIN')) return 'ADMIN';
-      if ((this.auth as any).hasRole && (this.auth as any).hasRole('SEGURIDAD')) return 'SEGURIDAD';
-      if ((this.auth as any).hasRole && (this.auth as any).hasRole('USUARIO')) return 'USUARIO';
+      if ((this.auth as any).hasRole && (this.auth as any).hasRole(ROLES.ADMIN)) return 'ADMIN';
+      if ((this.auth as any).hasRole && (this.auth as any).hasRole(ROLES.SEGURIDAD)) return 'SEGURIDAD';
+      if ((this.auth as any).hasRole && (this.auth as any).hasRole(ROLES.USUARIO)) return 'USUARIO';
       return 'ANONYMOUS';
     } catch { return 'UNKNOWN'; }
   }

@@ -33,7 +33,7 @@
 					<label for="fotoInput" class="file-picker">Seleccionar desde archivos</label>
 				</div>
 				<label>Sede</label>
-				<select [(ngModel)]="selectedSedeId" (change)="onSedeChange()">
+				<select aria-label="Sede" [(ngModel)]="selectedSedeId" (change)="onSedeChange()">
 					<option *ngFor="let s of sedes" [ngValue]="s.id">{{ s.nombre }}</option>
 				</select>
 				<small class="muted">Imagen representativa de la zona</small>

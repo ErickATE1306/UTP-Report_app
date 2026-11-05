@@ -46,6 +46,11 @@ export class UsuarioService {
     return this.http.get<any[]>(url).pipe(catchError(err => { console.warn('getSeguridadByRol falló', err); return of([]); }));
   }
 
+  /** Sin catchError: la pantalla debe mostrar por qué se rechazó. */
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/api/usuarios/${id}`);
+  }
+
   // Actualiza el estado enabled de un usuario
   updateEnabled(id: number, enabled: boolean): Observable<any> {
     const url = `${this.baseUrl}/api/usuarios/${id}/enabled?enabled=${enabled}`;

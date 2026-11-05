@@ -1,0 +1,86 @@
+<div class="u-pagina">
+  <div>
+    <h1>Detalle del reporte</h1>
+    <p class="u-tenue">{{ codigo() }}</p>
+  </div>
+
+  @if (cargando()) {
+    <p class="u-estado" role="status">Cargando el reporte…</p>
+  } @else if (error()) {
+    <div class="u-card u-estado" role="alert">
+      <p>{{ error() }}</p>
+      @if (!sinPermiso()) {
+        <button type="button" class="u-btn u-btn--secundario" (click)="cargar()">Reintentar</button>
+      }
+      <a routerLink="/usuario/mis-reportes">Volver a mis reportes</a>
+    </div>
+  } @else if (reporte(); as r) {
+    <div class="columnas">
+      <div class="columna">
+        <section class="u-card avance">
+          <span class="u-icono avance__icono" aria-hidden="true"><i class="bi bi-shield-check"></i></span>
+          <div class="avance__cuerpo">
+            <h2>{{ estado() }}</h2>
+            <div class="avance__barra">
+              <div class="u-progreso" role="progressbar" aria-label="Avance del reporte"
+                [attr.aria-valuenow]="progreso()" aria-valuemin="0" aria-valuemax="100">
+                <span [style.width.%]="progreso()"></span>
+              </div>
+              <strong>{{ progreso() }}%</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="u-card datos" aria-label="Datos del reporte">
+          <p><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> {{ r.tipoNombre }}</p>
+          <p><i class="bi bi-geo-alt" aria-hidden="true"></i> {{ r.sedeNombre }}</p>
+          <p><i class="bi bi-building" aria-hidden="true"></i> {{ r.zonaNombre }}</p>
+          <p><i class="bi bi-calendar-event" aria-hidden="true"></i> {{ r.fechaCreacion | fecha: 'fechaHora' }}</p>
+          <p class="prioridad">
+            <span><i class="bi bi-flag" aria-hidden="true"></i> Prioridad</span>
+            <span class="u-chip" [class.u-tono-rojo]="r.prioridad === 'ALTA'" [class.u-tono-ambar]="r.prioridad === 'MEDIA'"
+              [class.u-tono-verde]="r.prioridad === 'BAJA'" [class.u-tono-gris]="!r.prioridad">{{ prioridad() }}</span>
+          </p>
+          @if (r.anonimo) {
+            <p><i class="bi bi-incognito" aria-hidden="true"></i> Enviado como anónimo</p>
+          }
+        </section>
+
+        <section class="u-card descripcion">
+          <h2>Descripción</h2>
+          <p>{{ r.descripcion }}</p>
+          @if (r.fotoUrl) { <img [src]="r.fotoUrl" alt="Evidencia adjunta al reporte"> }
+        </section>
+      </div>
+
+      <div class="columna">
+        <section class="seguimiento">
+          <h2>Seguimiento</h2>
+          <ol>
+            @for (paso of seguimiento(); track paso.titulo) {
+              <li [class]="paso.estado" [attr.aria-current]="paso.estado === 'actual' ? 'step' : null">
+                <span class="marca" aria-hidden="true">
+                  @if (paso.estado === 'completado') { <i class="bi bi-check-lg"></i> }
+                </span>
+                <div>
+                  <strong>{{ paso.titulo }}</strong>
+                  <p class="u-tenue">{{ paso.descripcion }}</p>
+                  @if (paso.estado === 'actual') {
+                    <p class="u-tenue">Actualizado: {{ r.fechaActualizacion | fecha: 'fechaHora' }}</p>
+                  }
+                </div>
+              </li>
+            }
+          </ol>
+        </section>
+
+        @if (r.mensajeSeguridad) {
+          <section class="u-card descripcion"><h2>Mensaje de Seguridad</h2><p>{{ r.mensajeSeguridad }}</p></section>
+        }
+        @if (r.mensajeAdmin) {
+          <section class="u-card descripcion"><h2>Mensaje de Administración</h2><p>{{ r.mensajeAdmin }}</p></section>
+        }
+      </div>
+    </div>
+  }
+</div>

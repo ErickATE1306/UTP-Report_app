@@ -17,20 +17,13 @@ export class PerfilService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   cargarPerfil(){
-    const mockDefault: PerfilUsuario = {
-      username: 'alexis.demo',
-      nombreCompleto: 'Alexis Usuario Demo',
-      tipoUsuario: 'ALUMNO',
-      roles: ['ROLE_SUPERADMIN', 'ROLE_ADMIN', 'ROLE_USUARIO', 'ROLE_SEGURIDAD']
-    };
-
     if(!this.auth.getToken()) {
-      this.perfil.set(mockDefault);
+      this.perfil.set(null);
       return;
     }
     this.http.get<PerfilUsuario>(this.baseUrl).subscribe({
       next: p => this.perfil.set(p),
-      error: _ => this.perfil.set(mockDefault)
+      error: _ => this.perfil.set(null)
     });
   }
 

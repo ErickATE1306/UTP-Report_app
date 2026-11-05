@@ -69,15 +69,13 @@ export class AuthService {
   loadFromStorage() {
     const token = this.getToken();
     if (!token) {
-      this.isAuthenticated.set(true);
-      const defaultRoles = [ROLES.USUARIO];
-      const stored = localStorage.getItem('auth_roles');
-      if (stored) {
-        try { this.rolesSignal.set(JSON.parse(stored)); } catch (_) { this.rolesSignal.set(defaultRoles); }
-      } else {
-        this.rolesSignal.set(defaultRoles);
-        localStorage.setItem('auth_roles', JSON.stringify(defaultRoles));
-      }
+      this.isAuthenticated.set(false);
+      this.rolesSignal.set([]);
+      this.adminActingAsUser.set(false);
+      // Sin token, lo guardado no prueba nada: se descarta para no conceder roles.
+      localStorage.removeItem('auth_roles');
+      localStorage.removeItem(this.ADMIN_AS_USER_KEY);
+      localStorage.removeItem(this.ADMIN_ROLE_SELECTED_KEY);
       return;
     }
     this.isAuthenticated.set(true);

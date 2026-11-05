@@ -1,0 +1,42 @@
+.columnas, .columna { display: grid; gap: 16px; align-content: start; min-width: 0; }
+
+.avance { display: flex; align-items: center; gap: 14px; }
+.avance__icono { width: 60px; height: 60px; font-size: 1.7rem; }
+.avance__cuerpo { display: grid; flex: 1; gap: 8px; min-width: 0; }
+.avance__barra { display: flex; align-items: center; gap: 10px; }
+.avance__barra .u-progreso { flex: 1; }
+.avance__barra strong { color: var(--u-indigo); }
+
+.datos { display: grid; padding-block: 6px; }
+.datos p { display: flex; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--u-borde); font-weight: 500; }
+.datos p:last-child { border-bottom: 0; }
+.datos i { color: var(--u-tenue); }
+.prioridad { justify-content: space-between; align-items: center; }
+.prioridad span:first-child { display: flex; gap: 12px; }
+
+.descripcion { display: grid; gap: 8px; }
+.descripcion p { overflow-wrap: anywhere; white-space: pre-line; }
+.descripcion img { max-width: 100%; max-height: 320px; border-radius: 8px; object-fit: contain; }
+
+.seguimiento { display: grid; gap: 12px; }
+.seguimiento ol { margin: 0; padding: 0; list-style: none; }
+.seguimiento li { position: relative; display: flex; gap: 14px; padding-bottom: 18px; }
+.seguimiento li:last-child { padding-bottom: 0; }
+.seguimiento li:not(:last-child)::before {
+  content: ''; position: absolute; left: 11px; top: 24px; bottom: 0; width: 2px; background: var(--u-borde);
+}
+.seguimiento li.completado:not(:last-child)::before { background: var(--u-indigo); }
+.seguimiento li div { min-width: 0; }
+
+.marca {
+  z-index: 1; display: grid; place-items: center; flex: none; width: 24px; height: 24px;
+  border: 2px solid var(--u-borde); border-radius: 50%; background: #fff; color: #fff; font-size: .8rem;
+}
+.completado .marca { border-color: var(--u-indigo); background: var(--u-indigo); }
+.actual .marca { border-color: var(--u-indigo); box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 12px var(--u-indigo); }
+.actual strong { color: var(--u-indigo); }
+.pendiente strong { color: var(--u-tenue); font-weight: 500; }
+
+@media (min-width: 900px) {
+  .columnas { grid-template-columns: 1fr 1fr; gap: 24px; }
+}
