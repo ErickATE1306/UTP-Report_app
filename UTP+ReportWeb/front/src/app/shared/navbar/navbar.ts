@@ -1,4 +1,5 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
+import { encabezadosStomp } from '../../core/auth/stomp-auth';
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { NavigationEnd, NavigationStart, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -410,6 +411,8 @@ export class NavbarComponent {
   // Intenta establecer la conexión STOMP; reintenta si las librerías aún no están listas
   private ensureWsConnected(attempt = 0) {
     if (this.wsConnected || this.wsConnecting) return;
+    const encabezados = encabezadosStomp();
+    if (!encabezados) return;
     const W: any = window as any;
     if (!W || !W.SockJS || !W.Stomp) {
       try { console.debug('[Navbar][WS] Libs not ready, attempt', attempt); } catch {}
@@ -425,7 +428,7 @@ export class NavbarComponent {
       const socket = new W.SockJS('http://localhost:8080/ws');
       const client = W.Stomp.over(socket);
       client.debug = () => {};
-      client.connect({}, () => {
+      client.connect(encabezados, () => {
         try { console.info('[Navbar][WS] Connected and subscribed'); } catch {}
         this.wsClient = client;
         this.wsConnected = true;

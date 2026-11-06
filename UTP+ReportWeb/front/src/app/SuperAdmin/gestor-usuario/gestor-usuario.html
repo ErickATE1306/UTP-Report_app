@@ -19,10 +19,10 @@
 
 	<div class="user-filters">
 		<input type="text" placeholder="Buscar usuarios..." [(ngModel)]="searchText" />
-		<select [(ngModel)]="selectedRoleFilter">
+		<select aria-label="Filtrar por rol" [(ngModel)]="selectedRoleFilter">
 			<option *ngFor="let r of availableRoleFilters" [value]="r.key">{{ r.label }}</option>
 		</select>
-		<select [(ngModel)]="selectedEstadoFilter">
+		<select aria-label="Filtrar por estado" [(ngModel)]="selectedEstadoFilter">
 			<option value="all">Todos los estados</option>
 			<option value="activo">Activo</option>
 			<option value="inactivo">Inactivo</option>
@@ -104,7 +104,7 @@
 					<label class="block text-sm font-medium mb-1">Contraseña</label>
 					<input [type]="showPassword ? 'text' : 'password'" placeholder="Mínimo 6 caracteres"
 						[(ngModel)]="formData.password" [class.border-red-500]="formErrors.password" class="input-field pr-10" />
-					<button type="button" (click)="togglePasswordVisibility()"
+					<button type="button" [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'" (click)="togglePasswordVisibility()"
 						class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 h-full password-toggle-btn">
 						<i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
 					</button>
@@ -130,7 +130,7 @@
 				<!-- 5. ROL CON ICONOS -->
 				<div>
 					<label class="block text-sm font-medium mb-1">Rol</label>
-					<select [(ngModel)]="formData.role" (change)="onRoleChange($event)"
+					<select aria-label="Rol" [(ngModel)]="formData.role" (change)="onRoleChange($event)"
 						[class.border-red-500]="formErrors.role" class="select-field">
 						<option value="" disabled selected>Seleccionar Rol</option> <!-- Added default option -->
 						<option *ngFor="let roleKey of (roleConfig | keyvalue)" [value]="roleKey.key">
@@ -143,7 +143,7 @@
 				<!-- 6. SEDE -->
 				<div>
 					<label class="block text-sm font-medium mb-1">Sede</label>
-					<select [(ngModel)]="formData.campus" (change)="onSedeChange($event)" [class.border-red-500]="formErrors.campus" class="select-field">
+					<select aria-label="Sede" [(ngModel)]="formData.campus" (change)="onSedeChange($event)" [class.border-red-500]="formErrors.campus" class="select-field">
 						<option value="" disabled selected>Seleccionar Sede</option> <!-- Added default option -->
 						<!-- Mostrar mensaje cuando no haya sedes -->
 						<option *ngIf="sedes.length === 0" value="" disabled>
@@ -165,7 +165,7 @@
 					<i class="fas fa-user h-4 w-4"></i>
 					👥 Tipo de Usuario (OBLIGATORIO)
 				</label>
-				<select [(ngModel)]="formData.userType" (change)="onUserTypeChange($event)" [class.border-red-500]="formErrors.userType"
+				<select aria-label="Tipo de usuario" [(ngModel)]="formData.userType" (change)="onUserTypeChange($event)" [class.border-red-500]="formErrors.userType"
 					class="select-field border-blue-300">
 					<option value="" disabled selected>Seleccionar Tipo de Usuario</option> <!-- Added default option -->
 					<option value="alumno">
@@ -220,7 +220,7 @@
 							<span *ngFor="let zone of formData.assignedZones"
 								class="badge pr-1 bg-white border-green-300 font-bold text-green-800">
 								{{ zone.nombre }}
-								<button type="button" (click)="handleRemoveZone(zone)"
+								<button type="button" [attr.aria-label]="'Quitar zona ' + zone.nombre" (click)="handleRemoveZone(zone)"
 									class="ml-2 h-4 w-4 p-0 hover:bg-red-100 remove-zone-btn">
 									<i class="fas fa-times h-3 w-3"></i>
 								</button>
@@ -234,7 +234,7 @@
 							<i class="fas fa-map-marker-alt h-4 w-4"></i>
 							Agregar zona de la sede:
 						</p>
-						<select (change)="onAddZoneChange($event)" class="select-field"
+						<select aria-label="Agregar zona de la sede" (change)="onAddZoneChange($event)" class="select-field"
 							[class.border-red-300]="formData.assignedZones.length === 0 || formErrors.assignedZones"
 							[class.bg-red-50]="formData.assignedZones.length === 0 || formErrors.assignedZones"
 							[class.border-green-300]="formData.assignedZones.length > 0">

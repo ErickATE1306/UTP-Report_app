@@ -40,6 +40,9 @@
 
 .panel-header p { color: var(--muted-foreground); font-size: .95rem; margin: 0; }
 
+.logout-button { margin-left: auto; padding: .5rem 1rem; border: 1px solid #94a3b8; border-radius: .5rem; background: #fff; color: #1f2937; font: inherit; font-weight: 600; cursor: pointer; }
+.logout-button:focus-visible { outline: 3px solid #4f46c8; outline-offset: 2px; }
+
 /* Summary section */
 .summary-section {
   background-color: var(--card);

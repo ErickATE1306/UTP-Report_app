@@ -36,6 +36,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 
     // Verificar si un número de teléfono existe para otro usuario (excluyendo el id actual).
     Boolean existsByTelefonoAndIdNot(String telefono, Long id);
+
+    Boolean existsByCorreoAndIdNot(String correo, Long id);
 }
 
 

@@ -23,7 +23,7 @@ export class InicioAdmin implements OnInit {
   readonly seguridad = signal<UsuarioDto[]>([]); readonly cargando = signal(true);
   readonly procesandoId = signal<number | null>(null); readonly error = signal<string | null>(null);
   readonly exito = signal<string | null>(null);
-  filtroEstado: FiltroEstado = 'TODOS'; filtroTexto = '';
+  readonly filtroEstado = signal<FiltroEstado>('TODOS'); readonly filtroTexto = signal('');
   prioridadSeleccionada: Record<number, PrioridadReporte> = {};
   seguridadSeleccionada: Record<number, number | null> = {};
   comentario: Record<number, string> = {};
@@ -31,10 +31,11 @@ export class InicioAdmin implements OnInit {
   zonaForm = { nombre: '', descripcion: '', sedeId: null as number | null };
 
   readonly reportesFiltrados = computed(() => {
-    const texto = this.filtroTexto.trim().toLowerCase();
+    const texto = this.filtroTexto().trim().toLowerCase();
+    const filtroEstado = this.filtroEstado();
     return this.reportes().filter((reporte) => {
       const estado = reporte.reporteGestion?.estado ?? 'PENDIENTE';
-      const coincideEstado = this.filtroEstado === 'TODOS' || estado === this.filtroEstado;
+      const coincideEstado = filtroEstado === 'TODOS' || estado === filtroEstado;
       const coincideTexto = !texto || [reporte.descripcion, this.nombreZona(reporte.zonaId), this.nombreTipo(reporte.tipoIncidenteId)]
         .filter((valor): valor is string => Boolean(valor)).some((valor) => valor.toLowerCase().includes(texto));
       return coincideEstado && coincideTexto;

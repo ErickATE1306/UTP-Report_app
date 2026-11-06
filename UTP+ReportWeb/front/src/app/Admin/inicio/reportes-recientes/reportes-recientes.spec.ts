@@ -1,3 +1,6 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportesRecientes } from './reportes-recientes';
@@ -8,7 +11,8 @@ describe('ReportesRecientes', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReportesRecientes]
+      imports: [ReportesRecientes],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
     })
     .compileComponents();
 

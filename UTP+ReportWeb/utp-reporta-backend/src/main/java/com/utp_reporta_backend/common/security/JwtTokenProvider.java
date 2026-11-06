@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,13 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtTokenProvider {
 
-private static final String SECRET_KEY = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
+    private final Key signInKey;
+
+    // La clave viene de la variable JWT_SECRET: la aplicación no arranca si falta o es débil.
+    public JwtTokenProvider(@Value("${app.jwt.secret}") String secret) {
+        this.signInKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+    }
+
     // Genera un token JWT para el usuario autenticado
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
@@ -64,8 +71,7 @@ private static final String SECRET_KEY = "404E635266556A586E3272357538782F413F44
     }
     // Obtiene la clave de firma a partir de la clave secreta
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
+        return signInKey;
     }
     // Verifica si el token ha expirado
     private boolean isTokenExpired(String token) {

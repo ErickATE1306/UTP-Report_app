@@ -1,5 +1,6 @@
 package com.utp_reporta_backend.modules.reporte.service.command.impl;
 
+import com.utp_reporta_backend.common.exception.BadRequestException;
 import com.utp_reporta_backend.modules.reporte.dto.response.ReporteDTO;
 import com.utp_reporta_backend.modules.reporte.model.Reporte;
 import com.utp_reporta_backend.modules.tipoincidente.model.TipoIncidente;
@@ -34,6 +35,9 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class ReporteCommandServiceImpl implements ReporteCommandService {
+    // Tamaño de la columna reporte.descripcion: varchar(255).
+    private static final int DESCRIPCION_MAX = 255;
+
     private final ReporteRepository reporteRepository;
     private final TipoIncidenteRepository tipoIncidenteRepository;
     private final ZonaRepository zonaRepository;
@@ -47,6 +51,7 @@ public class ReporteCommandServiceImpl implements ReporteCommandService {
     public ReporteDTO createReporte(Long tipoIncidenteId, Long zonaId, String descripcion, MultipartFile foto,
             Boolean isAnonimo, String contacto, Long usuarioId) {
         fileValidator.validate(foto);
+        validarDescripcion(descripcion);
         Reporte reporte = new Reporte();
 
         TipoIncidente tipoIncidente = tipoIncidenteRepository.findById(tipoIncidenteId)
@@ -72,7 +77,7 @@ public class ReporteCommandServiceImpl implements ReporteCommandService {
                 usuario.setIntentosReporte(1);
             } else {
                 if (usuario.getIntentosReporte() >= 3) {
-                    throw new RuntimeException("Ha alcanzado el límite de 3 reportes por día.");
+                    throw new BadRequestException("Ha alcanzado el límite de 3 reportes por día.");
                 }
                 usuario.setIntentosReporte(usuario.getIntentosReporte() + 1);
             }
@@ -144,6 +149,7 @@ public class ReporteCommandServiceImpl implements ReporteCommandService {
     public ReporteDTO updateReporte(Long id, Long tipoIncidenteId, Long zonaId, String descripcion, MultipartFile foto,
             Boolean isAnonimo, String contacto, Long usuarioId) {
         fileValidator.validate(foto);
+        validarDescripcion(descripcion);
         Optional<Reporte> reporte = reporteRepository.findById(id);
         if (reporte.isPresent()) {
             Reporte existingReporte = reporte.get();
@@ -184,6 +190,12 @@ public class ReporteCommandServiceImpl implements ReporteCommandService {
     @Override
     public void deleteReporte(Long id) {
         reporteRepository.deleteById(id);
+    }
+
+    private void validarDescripcion(String descripcion) {
+        if (descripcion != null && descripcion.length() > DESCRIPCION_MAX) {
+            throw new BadRequestException("La descripción no puede superar los " + DESCRIPCION_MAX + " caracteres.");
+        }
     }
 
 }

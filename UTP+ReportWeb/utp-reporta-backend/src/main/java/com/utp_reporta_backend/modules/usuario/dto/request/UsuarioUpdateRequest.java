@@ -12,4 +12,5 @@ public class UsuarioUpdateRequest {
     private TipoUsuario tipoUsuario;
     private String sedeNombre;
     private List<String> zonasNombres;
+    private String password;
 }

@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideApiConfiguration } from './api/api-configuration';
 import { authInterceptor } from './core/auth/auth.interceptor';
+import { provideUsuarioModule } from './Usuario/infrastructure/usuario.providers';
 
 import { routes } from './app.routes';
 
@@ -13,5 +14,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideApiConfiguration('http://localhost:8080'),
+    provideUsuarioModule(),
   ]
 };

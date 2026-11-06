@@ -20,7 +20,7 @@
           <path d="M7 21V10h10v11" stroke="#d6334f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M9 7h.01M13 7h.01M9 11h.01M13 11h.01" stroke="#d6334f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <select [(ngModel)]="selectedSedeId" (change)="selectSede(selectedSedeId)">
+        <select aria-label="Sede" [(ngModel)]="selectedSedeId" (change)="selectSede(selectedSedeId)">
           <option *ngFor="let s of sedes" [ngValue]="s.id">{{ s.nombre }}</option>
         </select>
       </div>

@@ -812,10 +812,11 @@ export class GestorUsuario implements OnInit {
     });
   }
 
-  // Eliminar usuario (localmente) - backend no expone endpoint de borrado actualmente
   deleteUser(u: any) {
     if (!confirm(`¿Eliminar usuario ${u.nombreCompleto || u.username}? Esta acción no puede revertirse.`)) return;
-    // Si existiera endpoint para borrar, llamarlo aquí. Ahora solo filtrar la lista localmente.
-    this.users = this.users.filter(x => x.id !== u.id);
+    this.usuarioService.delete(u.id).subscribe({
+      next: () => { this.users = this.users.filter(x => x.id !== u.id); alert('Usuario eliminado correctamente.'); },
+      error: (err) => { alert(err?.error?.message || 'No se pudo eliminar el usuario.'); },
+    });
   }
 }

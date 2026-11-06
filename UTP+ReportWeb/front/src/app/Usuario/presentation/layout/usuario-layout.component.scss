@@ -1,0 +1,43 @@
+.marco { min-height: 100vh; min-height: 100dvh; background: var(--u-fondo); }
+
+.encabezado {
+  position: sticky; top: 0; z-index: 10;
+  background: linear-gradient(180deg, var(--u-coral-claro), var(--u-coral));
+  color: #fff;
+}
+.encabezado__fila { display: flex; align-items: center; gap: 8px; max-width: 1040px; margin: 0 auto; padding: 10px 12px; }
+.marca { margin-right: auto; color: #fff; font-size: 1.15rem; font-weight: 700; text-decoration: none; }
+
+.icono-btn {
+  position: relative; display: grid; place-items: center; width: 44px; height: 44px;
+  border: 0; border-radius: 50%; background: transparent; color: #fff; font-size: 1.25rem; cursor: pointer;
+}
+.icono-btn:hover { background: #ffffff2e; }
+.icono-btn:focus-visible, .marca:focus-visible, .nav-escritorio a:focus-visible { outline-color: #fff; }
+.punto { position: absolute; top: 9px; right: 10px; width: 10px; height: 10px; border: 2px solid #fff; border-radius: 50%; background: #f6b400; }
+
+.contenido { max-width: 1040px; margin: 0 auto; padding-bottom: 84px; }
+
+.nav-escritorio { display: none; }
+
+.nav-movil {
+  position: fixed; inset: auto 0 0; z-index: 10; display: grid; grid-template-columns: repeat(4, 1fr);
+  background: #fff; border-top: 1px solid var(--u-borde); box-shadow: 0 -4px 12px #1d244014;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-movil a {
+  display: grid; justify-items: center; gap: 2px; padding: 9px 2px 8px; border-top: 3px solid transparent;
+  color: var(--u-tenue); font-size: .75rem; font-weight: 500; text-decoration: none;
+}
+.nav-movil i { font-size: 1.25rem; }
+.nav-movil a.activo { border-top-color: var(--u-coral); color: var(--u-coral); font-weight: 600; }
+
+@media (min-width: 900px) {
+  .nav-movil { display: none; }
+  .contenido { padding-bottom: 32px; }
+  .marca { margin-right: 24px; }
+  .nav-escritorio { display: flex; flex: 1; gap: 4px; }
+  .nav-escritorio a { padding: 8px 14px; border-radius: 8px; color: #fff; font-weight: 500; text-decoration: none; }
+  .nav-escritorio a:hover { background: #ffffff2e; }
+  .nav-escritorio a.activo { background: #fff; color: var(--u-coral); font-weight: 600; }
+}

@@ -1,0 +1,35 @@
+.u-pagina { max-width: 640px; margin: 0 auto; width: 100%; }
+
+.pasos { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; padding: 12px 8px; list-style: none; }
+.pasos li { display: grid; justify-items: center; gap: 4px; color: var(--u-tenue); font-size: .8rem; }
+.numero { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--u-gris-suave); font-weight: 600; }
+.pasos .actual { color: var(--u-coral); font-weight: 600; }
+.pasos .actual .numero { background: var(--u-coral); color: #fff; }
+.pasos .hecho .numero { background: var(--u-indigo); color: #fff; }
+
+.formulario { display: grid; gap: 16px; }
+textarea.u-input { resize: vertical; }
+.contador { justify-self: end; font-size: .75rem; font-weight: 400; }
+
+.interruptor { display: flex; align-items: center; justify-content: space-between; gap: 16px; cursor: pointer; }
+.interruptor span { display: grid; gap: 2px; font-size: .875rem; }
+.interruptor small { font-size: .78rem; }
+.interruptor input { flex: none; width: 44px; height: 24px; accent-color: var(--u-indigo); cursor: pointer; }
+
+.evidencia {
+  display: grid; justify-items: center; gap: 2px; padding: 18px; border: 2px dashed #b5b1e8; border-radius: 10px;
+  color: var(--u-indigo); font-weight: 500; text-align: center; overflow-wrap: anywhere; cursor: pointer;
+}
+.evidencia i { font-size: 1.4rem; }
+.interruptor input:focus-visible { outline: 3px solid #4f46c8; outline-offset: 2px; }
+.evidencia:focus-within { outline: 3px solid #4f46c866; outline-offset: 2px; }
+.oculto { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.quitar { justify-self: start; padding: 6px 0; border: 0; background: none; color: var(--u-rojo); font: inherit; font-weight: 500; cursor: pointer; }
+
+.resumen { display: grid; gap: 12px; margin: 0; }
+.resumen dt { color: var(--u-tenue); font-size: .8rem; font-weight: 500; }
+.resumen dd { margin: 0; font-weight: 500; overflow-wrap: anywhere; white-space: pre-line; }
+
+.acciones { display: flex; gap: 10px; }
+.acciones .u-btn { flex: 1; }
+.acciones .u-btn--secundario { flex: none; }

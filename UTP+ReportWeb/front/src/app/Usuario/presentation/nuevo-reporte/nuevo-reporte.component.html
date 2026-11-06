@@ -1,0 +1,102 @@
+<div class="u-pagina">
+  <h1>Nuevo reporte</h1>
+
+  @if (cargando()) {
+    <p class="u-estado" role="status">Cargando formulario…</p>
+  } @else if (errorCarga()) {
+    <div class="u-card u-estado" role="alert">
+      <p>{{ errorCarga() }}</p>
+      <button type="button" class="u-btn u-btn--secundario" (click)="cargarDatos()">Reintentar</button>
+    </div>
+  } @else {
+    <ol class="u-card pasos">
+      @for (nombre of pasos; track nombre; let i = $index) {
+        <li [class.actual]="i === paso()" [class.hecho]="i < paso()" [attr.aria-current]="i === paso() ? 'step' : null">
+          <span class="numero">@if (i < paso()) { <i class="bi bi-check-lg" aria-hidden="true"></i> } @else { {{ i + 1 }} }</span>
+          {{ nombre }}
+        </li>
+      }
+    </ol>
+
+    <form class="u-card formulario" (ngSubmit)="paso() === 2 ? enviar() : siguiente()" novalidate>
+      @switch (paso()) {
+        @case (0) {
+          <label class="u-campo">Tipo de incidente
+            <select class="u-input" name="tipo" [ngModel]="tipoId()" (ngModelChange)="tipoId.set($event)">
+              <option [ngValue]="null">Seleccionar</option>
+              @for (tipo of tipos(); track tipo.id) { <option [ngValue]="tipo.id">{{ tipo.nombre }}</option> }
+            </select>
+            @if (errores().tipoIncidenteId; as error) { <span class="u-error" role="alert">{{ error }}</span> }
+          </label>
+
+          <label class="u-campo">Descripción
+            <textarea class="u-input" name="descripcion" rows="4" placeholder="Cuéntanos qué ocurrió"
+              [maxLength]="descripcionMax" [ngModel]="descripcion()" (ngModelChange)="descripcion.set($event)"></textarea>
+            <span class="u-tenue contador">{{ descripcion().length }}/{{ descripcionMax }}</span>
+            @if (errores().descripcion; as error) { <span class="u-error" role="alert">{{ error }}</span> }
+          </label>
+
+          <label class="interruptor">
+            <span>
+              <strong>Enviar reporte anónimo</strong>
+              <small class="u-tenue">Tu nombre no aparecerá en el reporte. El sistema conserva tu cuenta para aplicar el límite diario de reportes.</small>
+            </span>
+            <input type="checkbox" role="switch" name="anonimo" [ngModel]="anonimo()" (ngModelChange)="anonimo.set($event)">
+          </label>
+
+          <div class="u-campo">
+            <span>Agregar evidencia <small class="u-tenue">(opcional)</small></span>
+            <label class="evidencia">
+              <i class="bi bi-cloud-arrow-up" aria-hidden="true"></i>
+              <span>{{ foto()?.name ?? 'Agregar foto' }}</span>
+              <small class="u-tenue">JPG o PNG (máx. 10 MB)</small>
+              <input #campoFoto class="oculto" type="file" accept="image/jpeg,image/png" (change)="alElegirFoto($event)">
+            </label>
+            @if (foto()) {
+              <button type="button" class="quitar" (click)="quitarFoto(campoFoto)">Quitar foto</button>
+            }
+            @if (errores().foto; as error) { <span class="u-error" role="alert">{{ error }}</span> }
+          </div>
+        }
+        @case (1) {
+          <label class="u-campo">Sede
+            <select class="u-input" name="sede" [ngModel]="sedeId()" (ngModelChange)="seleccionarSede($event)">
+              <option [ngValue]="null">Seleccionar</option>
+              @for (sede of sedes(); track sede.id) { <option [ngValue]="sede.id">{{ sede.nombre }}</option> }
+            </select>
+          </label>
+
+          <label class="u-campo">Zona
+            <select class="u-input" name="zona" [disabled]="sedeId() == null" [ngModel]="zonaId()" (ngModelChange)="zonaId.set($event)">
+              <option [ngValue]="null">Seleccionar</option>
+              @for (zona of zonas(); track zona.id) { <option [ngValue]="zona.id">{{ zona.nombre }}</option> }
+            </select>
+            @if (errorZonas()) { <span class="u-error" role="alert">No pudimos cargar las zonas de esta sede.</span> }
+            @if (errores().zonaId; as error) { <span class="u-error" role="alert">{{ error }}</span> }
+          </label>
+        }
+        @case (2) {
+          <h2>Revisa tu reporte</h2>
+          <dl class="resumen">
+            <div><dt>Tipo</dt><dd>{{ tipoNombre() }}</dd></div>
+            <div><dt>Sede</dt><dd>{{ sedeNombre() }}</dd></div>
+            <div><dt>Zona</dt><dd>{{ zonaNombre() }}</dd></div>
+            <div><dt>Anónimo</dt><dd>{{ anonimo() ? 'Sí' : 'No' }}</dd></div>
+            <div><dt>Evidencia</dt><dd>{{ foto()?.name ?? 'Sin foto' }}</dd></div>
+            <div class="completo"><dt>Descripción</dt><dd>{{ descripcion().trim() }}</dd></div>
+          </dl>
+          @if (errorEnvio()) { <p class="u-error" role="alert">{{ errorEnvio() }}</p> }
+        }
+      }
+
+      <div class="acciones">
+        @if (paso() > 0) {
+          <button type="button" class="u-btn u-btn--secundario" [disabled]="enviando()" (click)="anterior()">Atrás</button>
+        }
+        <button type="submit" class="u-btn" [disabled]="enviando()">
+          {{ paso() === 2 ? (enviando() ? 'Enviando…' : 'Enviar reporte') : 'Continuar' }}
+        </button>
+      </div>
+    </form>
+  }
+</div>

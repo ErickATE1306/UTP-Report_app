@@ -1,3 +1,6 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Cancelados } from './cancelados';
@@ -8,7 +11,8 @@ describe('Cancelados', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Cancelados]
+      imports: [Cancelados],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
     })
     .compileComponents();
 

@@ -8,7 +8,6 @@ interface LoginResponse { token?: string; roles?: string[]; }
 export class AuthService {
   private readonly rolesState = signal<string[]>(this.readRoles());
   readonly roles = computed(() => this.rolesState());
-  readonly isAuthenticated = computed(() => Boolean(this.token()) && !this.isExpired(this.token()));
 
   constructor(private readonly authApi: AuthControllerService) {}
 
@@ -31,12 +30,14 @@ export class AuthService {
   hasRole(role: string): boolean { return this.rolesState().includes(role); }
   token(): string | null { return localStorage.getItem('auth_token'); }
 
+  /** Se evalúa en cada llamada: el token vive en localStorage y también expira con el tiempo. */
+  isAuthenticated(): boolean {
+    const exp = this.decode(this.token() ?? '')?.exp;
+    return typeof exp === 'number' && Date.now() < exp * 1000;
+  }
+
   private readRoles(): string[] {
     try { return JSON.parse(localStorage.getItem('auth_roles') ?? '[]') as string[]; } catch { return []; }
-  }
-  private isExpired(token: string | null): boolean {
-    const exp = token ? this.decode(token)?.exp : undefined;
-    return Boolean(exp && Date.now() >= exp * 1000);
   }
   private decode(token: string): JwtPayload | null {
     try { return JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))) as JwtPayload; } catch { return null; }

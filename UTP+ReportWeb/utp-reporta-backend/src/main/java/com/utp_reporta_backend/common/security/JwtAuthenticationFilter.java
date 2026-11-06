@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -44,13 +45,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             logger.info("[JwtAuthFilter] token validated OK for request {} {}", request.getMethod(), request.getRequestURI());
             String username = jwtTokenProvider.getUsernameFromJWT(token);
             
-			UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken authenticationToken = 
-                new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            try {
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+                // Una cuenta deshabilitada pierde el acceso aunque su token siga vigente.
+                if (userDetails.isEnabled()) {
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
+            } catch (UsernameNotFoundException e) {
+                logger.info("[JwtAuthFilter] token de un usuario que ya no existe");
+            }
         }
         else {
             logger.info("[JwtAuthFilter] token missing or invalid for request {} {}", request.getMethod(), request.getRequestURI());

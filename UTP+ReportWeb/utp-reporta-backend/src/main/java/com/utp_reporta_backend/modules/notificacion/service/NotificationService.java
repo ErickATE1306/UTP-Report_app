@@ -151,7 +151,7 @@ public class NotificationService {
             templateVariables.put("reporteTipoIncidente", reporte.getTipoIncidente().getNombre()); // Add incident type
             templateVariables.put("reporteZona", reporte.getZona().getNombre()); // Add zone name
             templateVariables.put("message", message);
-            templateVariables.put("reporteEstado", reporte.getReporteGestion().getEstado());
+            templateVariables.put("reporteEstado", reporte.getReporteGestion() != null ? reporte.getReporteGestion().getEstado() : null);
 
             try {
                 if (userEmail == null || userEmail.trim().isEmpty()) {

@@ -1,5 +1,7 @@
 package com.utp_reporta_backend.modules.auth.service.command.impl;
 
+import com.utp_reporta_backend.common.exception.BadRequestException;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,7 +49,9 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 	private final SedeRepository sedeRepository;
 	private final TimeService timeService; // Re-inject TimeService
 
+	// Sin noRollbackFor, la excepción revierte el contador de intentos y la cuenta nunca se bloquea.
 	@Override
+	@Transactional(noRollbackFor = AuthenticationException.class)
 	public String login(LoginDTO loginDTO) {
 		Optional<Usuario> usuarioOptional = usuarioRepository.findByUsernameOrCorreo(loginDTO.getUsernameOrCorreo(), loginDTO.getUsernameOrCorreo());
 		
@@ -98,10 +102,10 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 	@Override
 	public String registrarUsuario(RegistroUsuarioDTO registroUsuarioDTO) {
 		if (usuarioRepository.existsByUsername(registroUsuarioDTO.getUsername())) {
-			return "El nombre de usuario ya existe";
+			throw new BadRequestException("El nombre de usuario ya existe");
 		}
 		if (usuarioRepository.existsByCorreo(registroUsuarioDTO.getCorreo())) {
-			return "El email ya está en uso";
+			throw new BadRequestException("El email ya está en uso");
 		}
 		 // Buscar sede (Ahora, getSedeId() no es nulo)
 	    Sede sede = sedeRepository.findById(registroUsuarioDTO.getSedeId())
@@ -129,11 +133,10 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 	public String registrarAdmin(RegistroAdminDTO registroAdminDTO) {
 		
 		if (usuarioRepository.existsByUsername(registroAdminDTO.getUsername())) {
-			//throw new RuntimeException("El nombre de admin ya existe");
-			return "el nombre de admin ya existe";
+						throw new BadRequestException("El nombre de usuario ya existe");
 		}
 		if (usuarioRepository.existsByCorreo(registroAdminDTO.getCorreo())) {
-			return "El email ya está en uso";
+			throw new BadRequestException("El email ya está en uso");
 		}
 		
 		 // Buscar sede (Ahora, getSedeId() no es nulo)
@@ -165,21 +168,21 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 		
 		 // 1. VALIDACIÓN CLAVE: El ID de Sede NO debe ser nulo.
 	    if (registroSeguridadDTO.getSedeId() == null) {
-	        return "El ID de la sede (sedeId) no puede ser nulo."; 
+	        throw new BadRequestException("El ID de la sede (sedeId) no puede ser nulo.");
 	    }
 	    
 	    // 2. VALIDACIÓN ADICIONAL: El conjunto de IDs de Zona NO debe ser nulo.
 	    if (registroSeguridadDTO.getZonaIds() == null) {
-	        return "La lista de IDs de zona (zonaIds) no puede ser nula.";
+	        throw new BadRequestException("La lista de IDs de zona (zonaIds) no puede ser nula.");
 	    }
 
 	    // Validar username y correo
 	    if (usuarioRepository.existsByUsername(registroSeguridadDTO.getUsername())) {
-	        return "El nombre de usuario ya existe";
+	        throw new BadRequestException("El nombre de usuario ya existe");
 	    }
 
 	    if (usuarioRepository.existsByCorreo(registroSeguridadDTO.getCorreo())) {
-	        return "El correo ya está en uso";
+	        throw new BadRequestException("El correo ya está en uso");
 	    }
 
 	    // Buscar sede (Ahora, getSedeId() no es nulo)
@@ -189,7 +192,7 @@ public class AuthCommandServiceImpl implements AuthCommandService {
 	    // Buscar zonas
 	    Set<Zona> zonas = new HashSet<>(zonaRepository.findAllById(registroSeguridadDTO.getZonaIds()));
 	    if (zonas.isEmpty()) {
-	        return "Debe seleccionar al menos una zona válida";
+	        throw new BadRequestException("Debe seleccionar al menos una zona válida");
 	    }
 
 	    // Buscar rol de seguridad

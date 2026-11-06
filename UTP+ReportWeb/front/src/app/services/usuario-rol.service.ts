@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { Sede } from './sede.service';
 import { Zona } from './zona.service';
 
@@ -39,6 +39,23 @@ export interface RegistroSecurityDTO {
 }
 
 
+// Estas peticiones se piden como texto, así que un error llega con su JSON sin interpretar.
+// Se convierte para que las pantallas puedan leer err.error.message.
+function conErrorLegible(err: HttpErrorResponse): HttpErrorResponse {
+  if (typeof err.error !== 'string') return err;
+  try {
+    return new HttpErrorResponse({
+      error: JSON.parse(err.error),
+      headers: err.headers,
+      status: err.status,
+      statusText: err.statusText,
+      url: err.url ?? undefined,
+    });
+  } catch {
+    return err;
+  }
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -46,14 +63,18 @@ export class UsuarioRolService {
   private baseUrl = 'http://localhost:8080/api/auth';
   constructor(private http: HttpClient) { }
   registrarUsuario(data: RegistroDTO): Observable<string> {
-    return this.http.post(`${this.baseUrl}/registrarUsuario`, data, { responseType: 'text' });
+    return this.registrar('registrarUsuario', data);
   }
   registrarAdmin(data: RegistroAdminDTO): Observable<string> {
-    return this.http.post(`${this.baseUrl}/registrarAdmin`, data, { responseType: 'text' });
+    return this.registrar('registrarAdmin', data);
   }
   registrarSecurity(data: RegistroSecurityDTO): Observable<string> {
-    return this.http.post(`${this.baseUrl}/registrarSeguridad`, data, { responseType: 'text' });
-
+    return this.registrar('registrarSeguridad', data);
+  }
+  private registrar(ruta: string, data: unknown): Observable<string> {
+    return this.http.post(`${this.baseUrl}/${ruta}`, data, { responseType: 'text' }).pipe(
+      catchError((err: HttpErrorResponse) => throwError(() => conErrorLegible(err)))
+    );
   }
 
 

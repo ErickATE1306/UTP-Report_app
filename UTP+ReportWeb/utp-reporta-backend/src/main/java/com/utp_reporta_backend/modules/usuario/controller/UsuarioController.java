@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -29,17 +29,21 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @PutMapping("/{id}")
-    //@PreAuthorize("hasRole('SUPERADMIN') or hasRole('ADMIN')") // Add appropriate authorization
     public ResponseEntity<UsuarioDTO> updateUsuario(
             @PathVariable Long id,
-            @RequestBody UsuarioUpdateRequest request,
-            @RequestParam(required = false) String password) { // Optional password as RequestParam
-        UsuarioDTO updatedUsuario = usuarioService.updateUsuario(id, request, password);
+            @RequestBody UsuarioUpdateRequest request) { // La contraseña viaja en el cuerpo, nunca en la URL
+        UsuarioDTO updatedUsuario = usuarioService.updateUsuario(id, request, request.getPassword());
         if (updatedUsuario != null) {
             return ResponseEntity.ok(updatedUsuario);
         } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null); // Return 409 Conflict for phone number not unique
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null); // 409: teléfono repetido
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
+        usuarioService.deleteUsuario(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/seguridad/filter")
@@ -64,49 +68,42 @@ public class UsuarioController {
     }
 
     @GetMapping
-    //@PreAuthorize("hasRole('ADMIN') or hasRole('SUPERADMIN')")
     public ResponseEntity<List<UsuarioDTO>> getAllUsuarios() {
         List<UsuarioDTO> usuarios = usuarioService.getAllUsuarios();
         return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/rol/usuario")
-    //@PreAuthorize("hasRole('ADMIN') or hasRole('SUPERADMIN')")
     public ResponseEntity<List<UsuarioDTO>> getUsuariosByRolUsuario() {
         List<UsuarioDTO> usuarios = usuarioService.getUsuariosByRolUsuario();
         return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/rol/admin")
-    //@PreAuthorize("hasRole('ADMIN') or hasRole('SUPERADMIN')")
     public ResponseEntity<List<UsuarioDTO>> getUsuariosByRolAdmin() {
         List<UsuarioDTO> usuarios = usuarioService.getUsuariosByRolAdmin();
         return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/rol/seguridad")
-    //@PreAuthorize("hasRole('ADMIN') or hasRole('SUPERADMIN')")
     public ResponseEntity<List<UsuarioDTO>> getUsuariosByRolSeguridad() {
         List<UsuarioDTO> usuarios = usuarioService.getUsuariosByRolSeguridad();
         return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/tipo/docente")
-    //@PreAuthorize("hasRole('ADMIN') or hasRole('SUPERADMIN')")
     public ResponseEntity<List<UsuarioDTO>> getUsuariosByTipoDocente() {
         List<UsuarioDTO> usuarios = usuarioService.getUsuariosByTipoDocente();
         return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/tipo/alumno")
-    //@PreAuthorize("hasRole('ADMIN') or hasRole('SUPERADMIN')")
     public ResponseEntity<List<UsuarioDTO>> getUsuariosByTipoAlumno() {
         List<UsuarioDTO> usuarios = usuarioService.getUsuariosByTipoAlumno();
         return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/codigo/{codigo}")
-    //@PreAuthorize("hasRole('ADMIN') or hasRole('SUPERADMIN')") // Add appropriate authorization
     public ResponseEntity<UsuarioDTO> getUsuarioByCodigo(@PathVariable String codigo) {
         UsuarioDTO usuario = usuarioService.findByCodigo(codigo);
         if (usuario != null) {
@@ -117,14 +114,12 @@ public class UsuarioController {
     }
 
     @GetMapping("/enabled")
-    //@PreAuthorize("hasRole('ADMIN') or hasRole('SUPERADMIN')") // Add appropriate authorization
     public ResponseEntity<List<UsuarioDTO>> getUsuariosByEnabledStatus(@RequestParam boolean enabled) {
         List<UsuarioDTO> usuarios = usuarioService.getUsuariosByEnabledStatus(enabled);
         return ResponseEntity.ok(usuarios);
     }
 
     @PutMapping("/{id}/enabled")
-    //@PreAuthorize("hasRole('ADMIN') or hasRole('SUPERADMIN')") // Add appropriate authorization
     public ResponseEntity<UsuarioDTO> updateUsuarioEnabledStatus(@PathVariable Long id, @RequestParam boolean enabled) {
         UsuarioDTO updatedUsuario = usuarioService.updateUsuarioEnabledStatus(id, enabled);
         if (updatedUsuario != null) {
@@ -135,7 +130,6 @@ public class UsuarioController {
     }
 
     @GetMapping("/excluding-superadmin")
-    //@PreAuthorize("hasRole('ADMIN') or hasRole('SUPERADMIN')") // Add appropriate authorization
     public ResponseEntity<List<UsuarioDTO>> getAllUsersExcludingSuperAdmin() {
         List<UsuarioDTO> usuarios = usuarioService.getAllUsersExcludingSuperAdmin();
         return ResponseEntity.ok(usuarios);

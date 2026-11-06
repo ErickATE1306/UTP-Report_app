@@ -2,6 +2,7 @@ package com.utp_reporta_backend.common.config;
 
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +37,9 @@ public class DataInitializer implements CommandLineRunner{
     private final TipoIncidenteRepository tipoIncidenteRepository;
     private final SedeRepository sedeRepository;
     private final ZonaRepository zonaRepository;
+
+    @Value("${app.superadmin.password:}")
+    private String superadminPassword;
     
 
 	@Override
@@ -68,6 +72,11 @@ public class DataInitializer implements CommandLineRunner{
 		// Verificar si ya existe un usuario con el rol ROLE_SUPERADMIN
         if (usuarioRepository.count() == 0) {
 
+            // La contraseña inicial nunca va en el código: viene de SUPERADMIN_PASSWORD.
+            if (superadminPassword == null || superadminPassword.isBlank()) {
+                throw new IllegalStateException("Define la variable SUPERADMIN_PASSWORD para crear la primera cuenta superadmin.");
+            }
+
             // Si no existe ningún usuario con ROLE_SUPERADMIN, creamos uno
             Usuario superAdmin = new Usuario();
             superAdmin.setNombreCompleto("Super Admin");
@@ -79,7 +88,7 @@ public class DataInitializer implements CommandLineRunner{
 
             // Encriptar la contraseña usando BCryptPasswordEncoder
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String encodedPassword = passwordEncoder.encode("admin"); // Encriptamos la contraseña
+            String encodedPassword = passwordEncoder.encode(superadminPassword); // Encriptamos la contraseña
             superAdmin.setPassword(encodedPassword); // Asignamos la contraseña encriptada
 
             // Guardamos el usuario con la contraseña encriptada
